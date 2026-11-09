@@ -331,7 +331,16 @@ h2 .serif { font-size: 1.1em; }
 .pcard h4 { margin: 22px 0 0; font-size: 21px; letter-spacing: -0.02em; }
 .pcard p { margin: 8px 0 0; color: var(--ink-soft); font-size: 16px; }
 @media (max-width: 960px) { .pcards { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 540px) { .pcards { grid-template-columns: 1fr; } .privacy { padding: 90px 0; } }
+@media (max-width: 540px) {
+  .privacy { padding: 90px 0; }
+  /* Phones: compact rows, the icon beside the words. */
+  .pcards { grid-template-columns: 1fr; gap: 10px; margin-top: 40px; }
+  .pcard { display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; align-items: center; padding: 15px 18px; border-radius: 20px; }
+  .pcard .ic { width: 40px; height: 40px; border-radius: 12px; grid-row: span 2; align-self: start; }
+  .pcard .ic svg { width: 20px; height: 20px; }
+  .pcard h4 { margin: 0; font-size: 16.5px; }
+  .pcard p { margin: 2px 0 0; font-size: 14.5px; line-height: 1.4; }
+}
 
 /* Final */
 .final { position: relative; padding: 170px 0 150px; text-align: center; overflow: hidden; isolation: isolate; }

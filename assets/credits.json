@@ -1,0 +1,231 @@
+{
+ "postcards": [
+  {
+   "id": "gr-santorini",
+   "place": "Santorini",
+   "title": "1000 Three domes of Oia in Santorini Photo by Giles Laurent",
+   "author": "Giles Laurent",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:1000_Three_domes_of_Oia_in_Santorini_Photo_by_Giles_Laurent.jpg"
+  },
+  {
+   "id": "jp-kyoto",
+   "place": "Kyoto",
+   "title": "Katsura River bank with pleasure boat and illuminated building at sunset, Kyoto, Japan",
+   "author": "Basile Morin",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Katsura_River_bank_with_pleasure_boat_and_illuminated_building_at_sunset,_Kyoto,_Japan.jpg"
+  },
+  {
+   "id": "it-venice",
+   "place": "Venice",
+   "title": "Canal Grande Chiesa della Salute e Dogana dal ponte dell Accademia",
+   "author": "Wolfgang Moroder",
+   "license": "CC BY-SA 3.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Canal_Grande_Chiesa_della_Salute_e_Dogana_dal_ponte_dell_Accademia.jpg"
+  },
+  {
+   "id": "ma-marrakesh",
+   "place": "Marrakesh",
+   "title": "Mosquée de la Koutoubia - marakesh",
+   "author": "Baca12",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Mosqu%C3%A9e_de_la_Koutoubia_-_marakesh.jpg"
+  },
+  {
+   "id": "pe-cusco",
+   "place": "Cusco",
+   "title": "Iglesia de la Compañía de Jesús, Plaza de Armas, Cusco, Perú, 2015-07-31, DD 74",
+   "author": "Diego Delso",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Iglesia_de_la_Compa%C3%B1%C3%ADa_de_Jes%C3%BAs,_Plaza_de_Armas,_Cusco,_Per%C3%BA,_2015-07-31,_DD_74.JPG"
+  },
+  {
+   "id": "is-reykjavik",
+   "place": "Reykjavik",
+   "title": "Reykjavík panorama 3",
+   "author": "Jóhann Heiðar Árnason",
+   "license": "CC BY-SA 3.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0/",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Reykjav%C3%ADk_panorama_3.JPG"
+  },
+  {
+   "id": "hr-dubrovnik",
+   "place": "Dubrovnik",
+   "title": "Dubrovnik 2016-05-26 DSC06251 view from the wall",
+   "author": "Ponor",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Dubrovnik_2016-05-26_DSC06251_view_from_the_wall.jpg"
+  },
+  {
+   "id": "th-bangkok",
+   "place": "Bangkok",
+   "title": "The sculptures of two mythical giant demons, Thotsakan and Sahatsadecha, guarding the eastern gate of the main chapel of Wat Arun, Bangkok",
+   "author": "BerryJ",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:The_sculptures_of_two_mythical_giant_demons,_Thotsakan_and_Sahatsadecha,_guarding_the_eastern_gate_of_the_main_chapel_of_Wat_Arun,_Bangkok.jpg"
+  },
+  {
+   "id": "us-new-york-city",
+   "place": "New York City",
+   "title": "2024-11-17-Lower Manhattan-0593",
+   "author": "Superbass",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:2024-11-17-Lower_Manhattan-0593.jpg"
+  },
+  {
+   "id": "mx-tulum",
+   "place": "Tulum",
+   "title": "Tulum - 01",
+   "author": "Carlos Delgado",
+   "license": "CC BY-SA 3.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Tulum_-_01.jpg"
+  },
+  {
+   "id": "cz-prague",
+   "place": "Prague",
+   "title": "20190816 View of Prague from Old Castle Stairs 1646 5385",
+   "author": "Jakub Hałun",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:20190816_View_of_Prague_from_Old_Castle_Stairs_1646_5385.jpg"
+  },
+  {
+   "id": "jo-petra",
+   "place": "Petra",
+   "title": "View of Petra",
+   "author": "Bernard Gagnon",
+   "license": "CC BY-SA 3.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:View_of_Petra.jpg"
+  },
+  {
+   "id": "au-sydney",
+   "place": "Sydney",
+   "title": "Sydneyoperahouse at night",
+   "author": "Thomas Adams",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Sydneyoperahouse_at_night.jpg"
+  },
+  {
+   "id": "tr-istanbul",
+   "place": "Istanbul",
+   "title": "Exterior of Sultan Ahmed I Mosque in Istanbul, Turkey 002",
+   "author": "Moonik",
+   "license": "CC BY-SA 3.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Exterior_of_Sultan_Ahmed_I_Mosque_in_Istanbul,_Turkey_002.jpg"
+  },
+  {
+   "id": "pt-lisbon",
+   "place": "Lisbon",
+   "title": "Elevador da Glória, Lisbon, 20250604 1603 9346",
+   "author": "Jakub Hałun",
+   "license": "CC BY 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Elevador_da_Gl%C3%B3ria,_Lisbon,_20250604_1603_9346.jpg"
+  },
+  {
+   "id": "id-ubud",
+   "place": "Ubud",
+   "title": "Rice terraces, Bali",
+   "author": "Vyacheslav Argenberg",
+   "license": "CC BY 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Rice_terraces,_Bali.jpg"
+  },
+  {
+   "id": "nz-queenstown",
+   "place": "Queenstown",
+   "title": "Queenstown Bay Lake Wakatipu 03",
+   "author": "Krzysztof Golik",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Queenstown_Bay_Lake_Wakatipu_03.jpg"
+  },
+  {
+   "id": "za-cape-town",
+   "place": "Cape Town",
+   "title": "Cape Town (ZA), Table Mountain, Blick auf Camps Bay -- 2024 -- 2750",
+   "author": "Dietmar Rabich",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Cape_Town_(ZA),_Table_Mountain,_Blick_auf_Camps_Bay_--_2024_--_2750.jpg"
+  },
+  {
+   "id": "kr-seoul",
+   "place": "Seoul",
+   "title": "Gyeonghoeru (Royal Banquet Hall) at Gyeongbokgung Palace, Seoul",
+   "author": "Frank Schulenburg",
+   "license": "CC BY-SA 4.0",
+   "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Gyeonghoeru_(Royal_Banquet_Hall)_at_Gyeongbokgung_Palace,_Seoul.jpg"
+  },
+  {
+   "id": "fr-nice",
+   "place": "Nice",
+   "title": "Nice panorama (46940435665)",
+   "author": "Miguel Mendez",
+   "license": "CC BY 2.0",
+   "licenseURL": "https://creativecommons.org/licenses/by/2.0",
+   "sourceURL": "https://commons.wikimedia.org/wiki/File:Nice_panorama_(46940435665).jpg"
+  }
+ ],
+ "unsplash": [
+  {
+   "file": "italy.jpg",
+   "subject": "Italy · Cinque Terre",
+   "source": "https://images.unsplash.com/photo-1516483638261-f4dbaf036963"
+  },
+  {
+   "file": "japan.jpg",
+   "subject": "Japan · Kyoto",
+   "source": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e"
+  },
+  {
+   "file": "portugal.jpg",
+   "subject": "Portugal · Porto",
+   "source": "https://images.unsplash.com/photo-1555881400-74d7acaacd8b"
+  },
+  {
+   "file": "france.jpg",
+   "subject": "France · Paris",
+   "source": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34"
+  },
+  {
+   "file": "greece.jpg",
+   "subject": "Greece · Santorini",
+   "source": "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e"
+  },
+  {
+   "file": "switzerland.jpg",
+   "subject": "Switzerland · Alps",
+   "source": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99"
+  },
+  {
+   "file": "peru.jpg",
+   "subject": "Peru · Machu Picchu",
+   "source": "https://images.unsplash.com/photo-1526392060635-9d6019884377"
+  },
+  {
+   "file": "new-zealand.jpg",
+   "subject": "New Zealand · Lake Tekapo",
+   "source": "https://images.unsplash.com/photo-1697685188126-759161b3a230"
+  },
+  {
+   "file": "iceland.jpg",
+   "subject": "Iceland · Fjaðrárgljúfur canyon",
+   "source": "https://images.unsplash.com/photo-1504893524553-b855bce32c67"
+  }
+ ]
+}

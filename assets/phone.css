@@ -1,0 +1,57 @@
+/* Realistic device frames: iPhone (titanium edge, thin bezel, side buttons,
+   Dynamic Island) and iPhone Duo (unfolds with scroll). */
+
+.iphone {
+  position: relative; aspect-ratio: 1320 / 2868; border-radius: 15.6% / 7.2%;
+  padding: 1.1%;
+  background: linear-gradient(135deg, #9a9ca1 0%, #3d3f44 18%, #2a2c30 50%, #55585e 78%, #a3a6ab 100%);
+  box-shadow: 0 60px 110px -40px rgba(10, 18, 32, .55), 0 0 0 .5px rgba(0,0,0,.6);
+}
+.iphone .bezel { width: 100%; height: 100%; border-radius: 14.6% / 6.7%; background: #050505; padding: 3.2%; }
+.iphone .screen { position: relative; width: 100%; height: 100%; border-radius: 11.6% / 5.35%; overflow: hidden; background: #fff; }
+.iphone .screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.iphone .island { position: absolute; z-index: 3; top: 1.25%; left: 50%; width: 28.5%; height: 3.75%; transform: translateX(-50%); background: #000; border-radius: 999px; }
+/* Side buttons: action and volume on the left, side button on the right */
+.iphone > i { position: absolute; width: 1.15%; background: linear-gradient(90deg, #5b5e64, #a9acb1 60%, #6b6e74); border-radius: 2px; }
+.iphone > .b1 { left: -0.9%; top: 17.5%; height: 3.6%; }
+.iphone > .b2 { left: -0.9%; top: 24%; height: 7%; }
+.iphone > .b3 { left: -0.9%; top: 32.5%; height: 7%; }
+.iphone > .b4 { right: -0.9%; top: 27%; height: 10.5%; border-radius: 2px; }
+
+/* Story phone: stacked screens that cross-fade */
+.story-phone .iphone { height: 100%; width: auto; margin-left: auto; }
+.story-phone .sv { opacity: 0; transform: scale(1.04); transition: opacity .6s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+.story-phone .sv.on { opacity: 1; transform: none; }
+@media (max-width: 900px) { .story-phone .iphone { margin: 0 auto; } }
+
+/* iPhone Duo: the left half swings open as you scroll */
+.duosec { position: relative; height: 260vh; background: var(--night); }
+.duosec .stage { position: sticky; top: 0; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: clamp(20px, 4vh, 44px); padding-top: max(92px, 11vh); overflow: hidden; }
+.duosec .copy { text-align: center; z-index: 3; padding: 0 20px; }
+.duosec .copy .sub { margin-top: 14px; }
+.duosec .copy h2 { color: #fff; }
+.duosec .copy .sub { color: var(--mist); }
+.duo-wrap { width: min(86vw, 900px, calc((100svh - 340px) * 1.4216)); aspect-ratio: 2853 / 2007; perspective: 2400px; position: relative; }
+.duo { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; will-change: transform; }
+.duo .half { position: absolute; top: 0; bottom: 0; width: 50%; transform-style: preserve-3d; }
+.duo .right { right: 0; transform: translateZ(-3px); }
+.duo .left { left: 0; transform-origin: right center; will-change: transform; }
+.duo .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: 2.2% 2.2% 2.2% 2.2%; background: linear-gradient(135deg, #9a9ca1, #3d3f44 22%, #2a2c30 55%, #6b6e74 100%); }
+.duo .face .glass { position: relative; width: 100%; height: 100%; background: #050505; padding: 3%; }
+.duo .face .pic { width: 100%; height: 100%; background-size: 200% 100%; background-repeat: no-repeat; }
+/* Inner screen halves */
+.duo .right .face { border-radius: 0 9% 9% 0 / 0 6.4% 6.4% 0; padding-left: 0; }
+.duo .right .glass { border-radius: 0 7.8% 7.8% 0 / 0 5.6% 5.6% 0; padding-left: 0; }
+.duo .right .pic { background-position: right center; border-radius: 0 6% 6% 0 / 0 4.3% 4.3% 0; }
+.duo .left .front { border-radius: 9% 0 0 9% / 6.4% 0 0 6.4%; padding-right: 0; }
+.duo .left .front .glass { border-radius: 7.8% 0 0 7.8% / 5.6% 0 0 5.6%; padding-right: 0; }
+.duo .left .front .pic { background-position: left center; border-radius: 6% 0 0 6% / 4.3% 0 0 4.3%; }
+/* Cover screen on the outside of the left half */
+.duo .left .back { transform: rotateY(180deg); border-radius: 9% / 6.4%; }
+.duo .left .back .glass { border-radius: 7.8% / 5.6%; }
+.duo .left .back .pic { background-size: cover; background-position: center top; border-radius: 6% / 4.3%; }
+.duo .hinge { position: absolute; left: 50%; top: 2%; bottom: 2%; width: 2px; margin-left: -1px; background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.18), rgba(255,255,255,0)); z-index: 2; pointer-events: none; opacity: var(--hinge, 0); }
+.duo-shadow { position: absolute; left: 10%; right: 10%; bottom: -8%; height: 12%; background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); filter: blur(10px); z-index: -1; }
+.duo-label { position: absolute; bottom: max(30px, 5vh); left: 0; right: 0; text-align: center; color: var(--mist); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+@media (max-width: 760px) { .duo-wrap { width: min(94vw, calc((100svh - 300px) * 1.4216)); } .duosec { height: 220vh; } }
+@media (prefers-reduced-motion: reduce) { .duosec { height: auto; } .duosec .stage { position: relative; height: auto; padding: 120px 0; } .duo .left { transform: none !important; } .duo { transform: none !important; } }

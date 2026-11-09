@@ -11,144 +11,241 @@
   <meta property="og:url" content="https://getatlased.com/">
   <meta property="og:title" content="Atlased — Everywhere you've ever been">
   <meta property="og:description" content="Your photos already know where you've been. Atlased turns them into a travel journal, privately on your iPhone.">
-  <meta property="og:image" content="https://getatlased.com/assets/img/app-icon.png">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://getatlased.com/assets/photos/japan.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/dm-sans-700.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/photos/japan.jpg" as="image">
   <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("js")</script>
-  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/site.css?v=7">
+  <link rel="stylesheet" href="assets/phone.css?v=7">
 </head>
 <body>
   <header class="nav">
     <div class="wrap">
       <a class="brand" href="./"><img src="assets/img/mark.png" alt="">Atlased</a>
       <nav class="nav-links">
-        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#wrap">Year wrap</a>
         <a href="#privacy">Privacy</a>
-        <a href="support/">Support</a>
-        <a class="pill" href="#get">Coming Nov 20</a>
+        <a class="btn" href="#get">Coming Nov 20</a>
       </nav>
     </div>
   </header>
 
   <main>
+    <!-- Hero: full-bleed travel photos with a slow drift -->
     <section class="hero">
-      <div class="stars"></div>
-      <div class="glow a"></div><div class="glow b"></div>
-      <div class="wrap hero-grid">
-        <div class="reveal">
-          <span class="eyebrow"><span class="dot"></span>A travel journal for iPhone</span>
-          <h1>Everywhere you've <span class="serif">ever</span> been.</h1>
-          <p class="lede">Atlased finds your trips in the photos already on your iPhone, then turns them into a journal worth keeping. Every country, every city, every journey — in about a minute.</p>
-          <div class="ctas" id="get">
-            <span class="store" aria-label="Coming to the App Store on November 20">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.62c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.17-1.53 2.66-.39 6.6 1.1 8.75.73 1.05 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.3-3.5zM14.2 6.17c.6-.73 1.01-1.75.9-2.77-.87.04-1.92.58-2.54 1.31-.56.65-1.05 1.69-.92 2.69.97.07 1.96-.49 2.56-1.23z"/></svg>
-              <span><small>Coming November 20</small>App Store</span>
-            </span>
-            <a class="ghost" href="https://www.instagram.com/getatlased/" rel="noopener">Follow @getatlased →</a>
-          </div>
-          <div class="trust">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Stays on your iPhone</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/><path d="M3 3l18 18"/></svg>No account</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7z"/></svg>No ads, no tracking</span>
-          </div>
+      <div class="slides" aria-hidden="true">
+        <div class="slide" data-place="Kyoto, Japan" data-flag="jp" style="background-image:url(assets/photos/japan.jpg)"></div>
+        <div class="slide" data-place="Porto, Portugal" data-flag="pt" style="background-image:url(assets/photos/portugal.jpg)"></div>
+        <div class="slide" data-place="Lake Tekapo, New Zealand" data-flag="nz" style="background-image:url(assets/photos/new-zealand.jpg)"></div>
+        <div class="slide" data-place="The Alps, Switzerland" data-flag="ch" style="background-image:url(assets/photos/switzerland.jpg)"></div>
+        <div class="slide" data-place="Machu Picchu, Peru" data-flag="pe" style="background-image:url(assets/photos/peru.jpg)"></div>
+      </div>
+      <div class="hero-copy">
+        <span class="place-chip" id="placeChip"><img src="assets/flags/jp.svg" alt=""><span>Kyoto, Japan</span></span>
+        <h1>Everywhere you've <span class="serif grad">ever</span> been.</h1>
+        <p class="lede">Atlased finds your trips in the photos already on your iPhone and turns them into a journal worth keeping. Every country, every city, every journey — in about a minute.</p>
+        <div class="ctas" id="get">
+          <span class="store" aria-label="Coming to the App Store on November 20">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.62c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.17-1.53 2.66-.39 6.6 1.1 8.75.73 1.05 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.3-3.5zM14.2 6.17c.6-.73 1.01-1.75.9-2.77-.87.04-1.92.58-2.54 1.31-.56.65-1.05 1.69-.92 2.69.97.07 1.96-.49 2.56-1.23z"/></svg>
+            <span><small>Coming November 20</small>App Store</span>
+          </span>
+          <a class="ghost" href="https://www.instagram.com/getatlased/" rel="noopener">Follow @getatlased →</a>
         </div>
-        <div class="phones reveal" aria-hidden="true">
-          <div class="phone back"><img src="assets/img/atlas.jpg" alt="" loading="eager"></div>
-          <div class="phone front"><img src="assets/img/home.jpg" alt="Atlased showing a Hong Kong and Taiwan journey" loading="eager"></div>
+        <div class="hero-phone" id="heroPhone">
+          <div class="iphone"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i>
+            <div class="bezel"><div class="screen"><img src="assets/img/home.jpg" alt="Atlased showing a Hong Kong and Taiwan journey"><span class="island"></span></div></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="wrap center reveal">
-        <div class="kicker">The magic</div>
+    <!-- Intro -->
+    <section class="light intro" id="how">
+      <div class="wrap rv">
+        <span class="eyebrow t-orange">How it works</span>
         <h2>Your photos <span class="serif">already</span> know.</h2>
-        <p class="sub">Every photo keeps the place and the day it was taken. Atlased reads just that — on your iPhone — and rebuilds years of travel: the trips, the cities, the way there and back.</p>
+        <p class="sub muted">Every photo keeps the place and the day it was taken. Atlased reads just that — on your iPhone — and rebuilds years of travel.</p>
       </div>
-      <div class="wrap reveal">
+    </section>
+
+    <!-- Three steps beside a phone that changes as you scroll -->
+    <section class="light story">
+      <div class="wrap story-grid">
+        <div class="story-steps">
+          <div class="step" data-step="0">
+            <div class="mphone iphone" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i><div class="bezel"><div class="screen"><img src="assets/img/home.jpg" alt="" loading="lazy"><span class="island"></span></div></div></div>
+            <div class="inner">
+              <div class="num c-orange">1</div>
+              <h3>Tap once. <span class="serif t-orange">Watch</span> your trips appear.</h3>
+              <p>Allow Photos and Atlased does the rest: trips found, grouped into journeys and added for you. Nothing to type.</p>
+              <div class="tags"><span class="tag">Automatic</span><span class="tag">About a minute</span><span class="tag">Small towns named right</span></div>
+            </div>
+          </div>
+          <div class="step" data-step="1">
+            <div class="mphone iphone" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i><div class="bezel"><div class="screen"><img src="assets/img/journey.jpg" alt="" loading="lazy"><span class="island"></span></div></div></div>
+            <div class="inner">
+              <div class="num c-teal">2</div>
+              <h3>Every journey, <span class="serif t-teal">in order</span>.</h3>
+              <p>Each trip keeps its stops, its days and its photos. Flights and hotel stays from your calendar fill in how you got there and where you slept.</p>
+              <div class="tags"><span class="tag">Itinerary</span><span class="tag">Flights &amp; hotels</span><span class="tag">Notes &amp; albums</span></div>
+            </div>
+          </div>
+          <div class="step" data-step="2">
+            <div class="mphone iphone" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i><div class="bezel"><div class="screen"><img src="assets/img/atlas.jpg" alt="" loading="lazy"><span class="island"></span></div></div></div>
+            <div class="inner">
+              <div class="num c-sky">3</div>
+              <h3>Your world, <span class="serif t-sky">lit up</span>.</h3>
+              <p>Every country and city you've reached, glowing on a 3D globe. See how much of the world is yours — and how many times you've been back.</p>
+              <div class="tags"><span class="tag">3D globe</span><span class="tag">Countries &amp; cities</span><span class="tag">Wishlist</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="story-phone" aria-hidden="true">
+          <div class="bar"><i id="storyBar"></i></div>
+          <div class="iphone"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i>
+            <div class="bezel"><div class="screen">
+              <img class="sv on" data-step="0" src="assets/img/home.jpg" alt="">
+              <img class="sv" data-step="1" src="assets/img/journey.jpg" alt="" loading="lazy">
+              <img class="sv" data-step="2" src="assets/img/atlas.jpg" alt="" loading="lazy">
+              <span class="island"></span>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- iPhone Duo: unfolds onto the globe as you scroll -->
+    <section class="duosec" id="duo">
+      <div class="stage">
+        <div class="copy rv">
+          <span class="eyebrow t-orange">Made for iPhone Duo</span>
+          <h2>Unfold <span class="serif grad">your world</span>.</h2>
+          <p class="sub">Open it up and your whole atlas spreads out — the globe, your countries, every city you've been.</p>
+        </div>
+        <div class="duo-wrap" aria-hidden="true">
+          <div class="duo" id="duoBody">
+            <div class="half right"><div class="face"><div class="glass"><div class="pic" style="background-image:url(assets/img/duo-inner.jpg)"></div></div></div></div>
+            <div class="half left" id="duoLeft">
+              <div class="face front"><div class="glass"><div class="pic" style="background-image:url(assets/img/duo-inner.jpg)"></div></div></div>
+              <div class="face back"><div class="glass"><div class="pic" style="background-image:url(assets/img/duo-cover.jpg)"></div></div></div>
+            </div>
+            <div class="hinge" id="duoHinge"></div>
+          </div>
+          <div class="duo-shadow"></div>
+        </div>
+        <div class="duo-label" id="duoLabel">Scroll to unfold</div>
+      </div>
+    </section>
+
+    <!-- Postcards -->
+    <section class="postcards">
+      <div class="wrap head rv">
+        <span class="eyebrow t-coral">Every place, remembered</span>
+        <h2>From Kyoto to <span class="serif">Cusco</span>.</h2>
+        <p class="sub muted">Thousands of towns and cities, named on your iPhone — no internet needed.</p>
+      </div>
+      <div class="lane" id="laneA">
+        <div class="card-p" style="--r:-2deg"><img class="photo" src="assets/postcards/gr-santorini.jpg" alt="Santorini" loading="lazy"><span class="label"><img src="assets/flags/gr.svg" alt="">Santorini</span></div>
+        <div class="card-p" style="--r:1.5deg"><img class="photo" src="assets/postcards/jp-kyoto.jpg" alt="Kyoto" loading="lazy"><span class="label"><img src="assets/flags/jp.svg" alt="">Kyoto</span></div>
+        <div class="card-p" style="--r:-1deg"><img class="photo" src="assets/postcards/it-venice.jpg" alt="Venice" loading="lazy"><span class="label"><img src="assets/flags/it.svg" alt="">Venice</span></div>
+        <div class="card-p" style="--r:2deg"><img class="photo" src="assets/postcards/ma-marrakesh.jpg" alt="Marrakesh" loading="lazy"><span class="label"><img src="assets/flags/ma.svg" alt="">Marrakesh</span></div>
+        <div class="card-p" style="--r:-1.5deg"><img class="photo" src="assets/postcards/pe-cusco.jpg" alt="Cusco" loading="lazy"><span class="label"><img src="assets/flags/pe.svg" alt="">Cusco</span></div>
+        <div class="card-p" style="--r:1deg"><img class="photo" src="assets/postcards/is-reykjavik.jpg" alt="Reykjavík" loading="lazy"><span class="label"><img src="assets/flags/is.svg" alt="">Reykjavík</span></div>
+        <div class="card-p" style="--r:-2deg"><img class="photo" src="assets/postcards/hr-dubrovnik.jpg" alt="Dubrovnik" loading="lazy"><span class="label"><img src="assets/flags/hr.svg" alt="">Dubrovnik</span></div>
+        <div class="card-p" style="--r:1.5deg"><img class="photo" src="assets/postcards/th-bangkok.jpg" alt="Bangkok" loading="lazy"><span class="label"><img src="assets/flags/th.svg" alt="">Bangkok</span></div>
+        <div class="card-p" style="--r:-1deg"><img class="photo" src="assets/postcards/us-new-york-city.jpg" alt="New York" loading="lazy"><span class="label"><img src="assets/flags/us.svg" alt="">New York</span></div>
+        <div class="card-p" style="--r:2deg"><img class="photo" src="assets/postcards/mx-tulum.jpg" alt="Tulum" loading="lazy"><span class="label"><img src="assets/flags/mx.svg" alt="">Tulum</span></div>
+      </div>
+      <div class="lane rev" id="laneB">
+        <div class="card-p" style="--r:1.5deg"><img class="photo" src="assets/postcards/cz-prague.jpg" alt="Prague" loading="lazy"><span class="label"><img src="assets/flags/cz.svg" alt="">Prague</span></div>
+        <div class="card-p" style="--r:-2deg"><img class="photo" src="assets/postcards/jo-petra.jpg" alt="Petra" loading="lazy"><span class="label"><img src="assets/flags/jo.svg" alt="">Petra</span></div>
+        <div class="card-p" style="--r:1deg"><img class="photo" src="assets/postcards/au-sydney.jpg" alt="Sydney" loading="lazy"><span class="label"><img src="assets/flags/au.svg" alt="">Sydney</span></div>
+        <div class="card-p" style="--r:-1.5deg"><img class="photo" src="assets/postcards/tr-istanbul.jpg" alt="Istanbul" loading="lazy"><span class="label"><img src="assets/flags/tr.svg" alt="">Istanbul</span></div>
+        <div class="card-p" style="--r:2deg"><img class="photo" src="assets/postcards/pt-lisbon.jpg" alt="Lisbon" loading="lazy"><span class="label"><img src="assets/flags/pt.svg" alt="">Lisbon</span></div>
+        <div class="card-p" style="--r:-1deg"><img class="photo" src="assets/postcards/id-ubud.jpg" alt="Ubud" loading="lazy"><span class="label"><img src="assets/flags/id.svg" alt="">Ubud</span></div>
+        <div class="card-p" style="--r:1.5deg"><img class="photo" src="assets/postcards/nz-queenstown.jpg" alt="Queenstown" loading="lazy"><span class="label"><img src="assets/flags/nz.svg" alt="">Queenstown</span></div>
+        <div class="card-p" style="--r:-2deg"><img class="photo" src="assets/postcards/za-cape-town.jpg" alt="Cape Town" loading="lazy"><span class="label"><img src="assets/flags/za.svg" alt="">Cape Town</span></div>
+        <div class="card-p" style="--r:1deg"><img class="photo" src="assets/postcards/kr-seoul.jpg" alt="Seoul" loading="lazy"><span class="label"><img src="assets/flags/kr.svg" alt="">Seoul</span></div>
+        <div class="card-p" style="--r:-1.5deg"><img class="photo" src="assets/postcards/fr-nice.jpg" alt="Nice" loading="lazy"><span class="label"><img src="assets/flags/fr.svg" alt="">Nice</span></div>
+      </div>
+    </section>
+
+    <!-- World map -->
+    <section class="mapsec">
+      <div class="wrap head rv">
+        <span class="eyebrow t-orange">Your atlas</span>
+        <h2>Years of travel, <span class="serif grad">drawn in</span>.</h2>
+        <p class="sub" style="color:var(--mist)">The way there and back, every stop on the way — your whole travel history on one map.</p>
+      </div>
+      <div class="wrap rv">
         <div class="map-card">
           <div class="map">
             <img src="assets/img/world.jpg" alt="" loading="lazy">
             <svg id="journeys" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true"></svg>
-            <div class="fade"></div>
           </div>
           <div class="stats">
-            <div class="stat"><b data-count="16">16</b><span>Countries</span></div>
-            <div class="stat"><b data-count="24">24</b><span>Cities</span></div>
-            <div class="stat"><b data-count="10">10</b><span>Journeys</span></div>
+            <div class="stat"><b data-count="34">34</b><span>Countries</span></div>
+            <div class="stat"><b data-count="49">49</b><span>Cities</span></div>
+            <div class="stat"><b data-count="18">18</b><span>Journeys</span></div>
+            <div class="stat"><b data-count="186400">186,400</b><span>Miles</span></div>
           </div>
         </div>
         <p class="map-note">An example journal. Yours appears the first time you open Atlased.</p>
       </div>
     </section>
 
-    <section id="features">
-      <div class="wrap">
-        <div class="feature reveal">
-          <div class="copy">
-            <div class="kicker">Journeys</div>
-            <h3>Every trip, <span class="serif">rebuilt</span> for you.</h3>
-            <p>Each journey keeps its stops in order, its dates and its photos. Flights and hotel stays from your calendar fill in how you got there and where you slept.</p>
-            <ul>
-              <li>Trips found automatically — nothing to type.</li>
-              <li>Small towns named right, not just the nearest big city.</li>
-              <li>Notes, covers and your own photo albums.</li>
-            </ul>
-          </div>
-          <div class="shot"><div class="phone"><img src="assets/img/journey.jpg" alt="A Türkiye and UAE journey with its route and itinerary" loading="lazy"></div></div>
+    <!-- Year wrap -->
+    <section class="wrapsec" id="wrap">
+      <div class="wrap wrap-grid">
+        <div class="copy rv">
+          <span class="eyebrow t-orange">Year in travel</span>
+          <h2>Your year, <span class="serif grad">wrapped</span>.</h2>
+          <p class="sub" style="margin-inline:0;color:var(--mist)">One picture of your whole year — made for your Stories.</p>
+          <ul class="list">
+            <li><span class="dotc" style="background:var(--orange)"></span><span><b>Countries &amp; cities</b> you reached</span></li>
+            <li><span class="dotc" style="background:var(--teal)"></span><span><b>Every flag</b> you collected</span></li>
+            <li><span class="dotc" style="background:var(--sky)"></span><span><b>Miles flown</b> and days away</span></li>
+            <li><span class="dotc" style="background:var(--violet)"></span><span>Notes and journey names <b>stay private</b></span></li>
+          </ul>
         </div>
-
-        <div class="feature flip reveal">
-          <div class="copy">
-            <div class="kicker">Atlas</div>
-            <h3>Your world, on a <span class="serif">globe</span>.</h3>
-            <p>Every country and city you've reached, lit up on a 3D globe or a flat map. See how much of the world is yours — and keep a wishlist for what's next.</p>
-            <ul>
-              <li>Countries, cities and territories, counted properly.</li>
-              <li>Search a city to see how many times you've been.</li>
-              <li>A wishlist for the places still waiting.</li>
-            </ul>
-          </div>
-          <div class="shot"><div class="phone"><img src="assets/img/atlas.jpg" alt="The Atlas globe with visited countries highlighted" loading="lazy"></div></div>
-        </div>
-
-        <div class="feature warm reveal">
-          <div class="copy">
-            <div class="kicker">Year in travel</div>
-            <h3>Your year, <span class="serif">wrapped</span>.</h3>
-            <p>The countries, the cities, the miles flown and the flags you collected — in one picture made for your Stories. Notes and journey names stay out of it.</p>
-            <ul>
-              <li>Light and dark styles.</li>
-              <li>Any year, or all of them.</li>
-              <li>Made on your iPhone, shared only when you choose.</li>
-            </ul>
-          </div>
-          <div class="shot"><div class="phone"><img src="assets/img/wrap.jpg" alt="A 2026 Year wrap with countries, flags and a world map" loading="lazy"></div></div>
+        <div class="wrap-card">
+          <div class="tilt" id="tilt"><img class="wrapimg" src="assets/img/wrap-card.jpg" alt="A 2026 Year wrap: 13 countries, 30 cities and a world map of routes" loading="lazy"></div>
+          <img class="flagfly" src="assets/flags/jp.svg" alt="" style="left:-9%;top:8%;--d:.05s">
+          <img class="flagfly" src="assets/flags/it.svg" alt="" style="right:-8%;top:16%;--d:.2s">
+          <img class="flagfly" src="assets/flags/mx.svg" alt="" style="left:-12%;top:44%;--d:.35s">
+          <img class="flagfly" src="assets/flags/gr.svg" alt="" style="right:-11%;top:52%;--d:.5s">
+          <img class="flagfly" src="assets/flags/tr.svg" alt="" style="left:-6%;bottom:12%;--d:.65s">
+          <img class="flagfly" src="assets/flags/kr.svg" alt="" style="right:-6%;bottom:6%;--d:.8s">
         </div>
       </div>
     </section>
 
-    <section class="section privacy-band" id="privacy">
-      <div class="wrap center reveal">
-        <div class="kicker">Private by design</div>
+    <!-- Privacy -->
+    <section class="light privacy" id="privacy">
+      <div class="wrap head rv">
+        <span class="eyebrow t-teal">Private by design</span>
         <h2>Your journal stays <span class="serif">yours</span>.</h2>
-        <p class="sub">No account, no server, no ads. Atlased works on your iPhone, and nothing leaves it unless you share it.</p>
+        <p class="sub muted">No account, no server, no ads. Atlased works on your iPhone, and nothing leaves it unless you share it.</p>
       </div>
-      <div class="wrap cards reveal">
-        <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div><h4>On your iPhone</h4><p>Trips are found on the device. Your photos are never uploaded.</p></div>
-        <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div><h4>No account</h4><p>Open it and start. Nothing to sign up for, nothing to log into.</p></div>
-        <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><h4>No ads, no tracking</h4><p>No analytics, no ad networks. Just your travels.</p></div>
-        <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div><h4>Works offline</h4><p>Your journal is always there, even on a plane.</p></div>
+      <div class="wrap pcards">
+        <div class="pcard rv" style="--d:0s"><div class="ic c-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div><h4>On your iPhone</h4><p>Trips are found on the device. Your photos are never uploaded.</p></div>
+        <div class="pcard rv" style="--d:.1s"><div class="ic c-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div><h4>No account</h4><p>Open it and start. Nothing to sign up for, nothing to log into.</p></div>
+        <div class="pcard rv" style="--d:.2s"><div class="ic c-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><h4>No ads, no tracking</h4><p>No analytics, no ad networks. Just your travels.</p></div>
+        <div class="pcard rv" style="--d:.3s"><div class="ic c-orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div><h4>Works offline</h4><p>Your journal is always there, even on a plane.</p></div>
       </div>
     </section>
 
+    <!-- Final -->
     <section class="final">
-      <div class="wrap reveal">
+      <div class="bg" id="finalBg" style="background-image:url(assets/photos/greece.jpg)"></div>
+      <div class="wrap rv">
         <img class="icon" src="assets/img/app-icon.png" alt="Atlased app icon" loading="lazy">
         <h2>Start with the trips <span class="serif">you've already</span> taken.</h2>
-        <p class="sub" style="margin-inline:auto">Atlased arrives on the App Store on November 20.</p>
+        <p class="sub">Made by travelers, for travelers. On the App Store November 20.</p>
         <div class="ctas">
           <span class="store" aria-label="Coming to the App Store on November 20">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.62c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.17-1.53 2.66-.39 6.6 1.1 8.75.73 1.05 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.3-3.5zM14.2 6.17c.6-.73 1.01-1.75.9-2.77-.87.04-1.92.58-2.54 1.31-.56.65-1.05 1.69-.92 2.69.97.07 1.96-.49 2.56-1.23z"/></svg>
@@ -165,6 +262,7 @@
       <nav>
         <a href="privacy/">Privacy</a>
         <a href="support/">Support</a>
+        <a href="credits/">Photo credits</a>
         <a href="https://www.instagram.com/getatlased/" rel="noopener">Instagram</a>
         <a href="https://www.tiktok.com/@getatlased" rel="noopener">TikTok</a>
         <a href="mailto:getatlased@gmail.com">getatlased@gmail.com</a>
@@ -172,6 +270,6 @@
       <span>© 2026 Behzad Zahiri</span>
     </div>
   </footer>
-  <script src="assets/site.js" defer></script>
+  <script src="assets/site.js?v=7" defer></script>
 </body>
 </html>

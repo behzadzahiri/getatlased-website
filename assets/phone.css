@@ -57,3 +57,10 @@
 @media (max-width: 760px) { .duo-wrap { width: min(94vw, calc((100svh - 450px) * 1.4216)); } .duosec { height: 220vh; } }
 @media (max-height: 720px) and (min-width: 761px) { .duosec .copy .sub { display: none; } .duo-wrap { width: min(86vw, 880px, calc((100svh - 330px) * 1.4216)); } }
 @media (prefers-reduced-motion: reduce) { .duosec { height: auto; } .duosec .stage { position: relative; height: auto; padding: 120px 0; } .duo .left { transform: none !important; } .duo { transform: none !important; } }
+
+/* Clips from the app inside the frames. The screenshot under each one shows until it plays. */
+.iphone .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: transparent; }
+.duo-vid { position: absolute; z-index: 1; left: 2.12%; right: 2.12%; top: 3.01%; bottom: 3.01%; width: 95.76%; height: 93.98%;
+  object-fit: cover; border-radius: 3% / 4.3%; opacity: 0; transition: opacity .45s ease; transform: translateZ(1px); pointer-events: none; }
+.duo-vid.on { opacity: 1; }
+.duo .hinge { z-index: 2; }

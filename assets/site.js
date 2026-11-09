@@ -151,6 +151,16 @@
   const nav = $(".nav"), heroPhone = $("#heroPhone");
   const storySteps = $$(".story-steps .step"), storyShots = $$(".story-phone .sv"), bar = $("#storyBar"), story = $(".story");
   const storyTints = $$(".story-phone .tint"), storyFloats = $$(".story-phone .floats");
+  // ---- Clips in the frames: load when close, play only while on screen ----
+  const storyVids = $$(".story-phone video.sv"), duoVid = $("#duoVid");
+  const playVid = v => { if (reduce) return; if (v.preload !== "auto") v.preload = "auto"; const p = v.play(); if (p) p.catch(() => {}); };
+  if (!reduce && "IntersectionObserver" in window) {
+    const seen = new IntersectionObserver(entries => entries.forEach(e => {
+      const v = e.target;
+      if (e.isIntersecting && v.dataset.active !== "0" && v !== duoVid) playVid(v); else if (!e.isIntersecting) v.pause();
+    }), { rootMargin: "300px 0px" });
+    $$("video.vid").forEach(v => { if (v.classList.contains("sv")) v.dataset.active = v.classList.contains("on") ? "1" : "0"; seen.observe(v); });
+  }
   // Phones show every step at once, so each step's panel gets a copy of its cards.
   $$(".mstage").forEach(m => {
     const f = $(`.story-phone .floats[data-step="${m.dataset.step}"]`);
@@ -177,8 +187,9 @@
         if (best !== current) {
           current = best;
           storySteps.forEach((s, k) => s.classList.toggle("active", k === best));
-          storyShots.forEach((im, k) => im.classList.toggle("on", k === best));
+          storyShots.forEach(im => im.classList.toggle("on", Number(im.dataset.step) === best));
           storyTints.forEach((t, k) => t.classList.toggle("on", k === best));
+          storyVids.forEach(v => { const on = Number(v.dataset.step) === best; v.dataset.active = on ? "1" : "0"; on ? playVid(v) : v.pause(); });
           storyFloats.forEach((f, k) => f.classList.toggle("on", k === best));
         }
         if (bar && story) { const r = story.getBoundingClientRect(); bar.style.height = `${clamp((vh / 2 - r.top) / r.height) * 100}%`; }
@@ -193,6 +204,7 @@
         duoBody.style.transform = `translateX(${-25 * (1 - e)}%) rotateX(${8 * (1 - e)}deg) scale(${0.86 + 0.14 * e})`;
         duoHinge.style.setProperty("--hinge", e > .9 ? (e - .9) * 10 : 0);
         if (duoLabel) duoLabel.style.opacity = 1 - clamp(p * 3);
+        if (duoVid) { const open = e > 0.97; duoVid.classList.toggle("on", open); if (open && duoVid.paused) playVid(duoVid); else if (!open && !duoVid.paused) duoVid.pause(); }
       }
 
       // Map starts drawing when it's well in view.

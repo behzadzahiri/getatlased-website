@@ -83,6 +83,8 @@ h1 .serif { font-size: 1.1em; letter-spacing: -0.02em; text-shadow: none; }
 .hero .ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 34px; align-items: center; }
 .ghost { color: #fff; font-weight: 600; padding: 12px 8px; opacity: .92; }
 .ghost:hover { opacity: 1; }
+.insta { display: inline-flex; align-items: center; gap: 9px; }
+.insta svg { width: 22px; height: 22px; }
 .hero-phone { position: relative; margin: 76px auto 0; width: min(330px, 74vw); z-index: 2; margin-bottom: -320px; }
 @media (max-width: 760px) { .hero-phone { margin-bottom: -220px; } }
 

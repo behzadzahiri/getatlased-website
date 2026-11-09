@@ -167,6 +167,12 @@
     if (f) { const copy = f.cloneNode(true); copy.classList.add("on"); m.appendChild(copy); }
   });
   const duoSec = $("#duo"), duoLeft = $("#duoLeft"), duoBody = $("#duoBody"), duoHinge = $("#duoHinge"), duoLabel = $("#duoLabel");
+  const duoStage = duoSec ? $(".stage", duoSec) : null;
+  // Where the browser can tie an animation to scrolling itself (Safari 26, Chrome), it moves
+  // the Duo and the Year wrap card in step with the finger; doing it here lags a frame behind
+  // on iPhone and shakes. Older browsers get the same motion from this script.
+  const nativeScroll = !!(window.CSS && CSS.supports && CSS.supports("animation-timeline: view()"));
+  if (nativeScroll) document.documentElement.classList.add("scroll-native");
   const wrapSec = $(".wrapsec"), tilt = $("#tilt"), finalBg = $("#finalBg"), finalSec = $(".final");
   let current = -1;
 
@@ -197,13 +203,16 @@
 
       // Duo: fold angle follows scroll through the section.
       if (duoSec && duoLeft) {
-        const r = duoSec.getBoundingClientRect(), span = r.height - vh;
+        // The stage's own height (100svh) doesn't change when Safari's toolbar shows or hides.
+        const r = duoSec.getBoundingClientRect(), span = r.height - (duoStage ? duoStage.offsetHeight : vh);
         const p = clamp(-r.top / (span * 0.75));
         const e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-        duoLeft.style.transform = `rotateY(${180 * (1 - e)}deg)`;
-        duoBody.style.transform = `translateX(${-25 * (1 - e)}%) rotateX(${8 * (1 - e)}deg) scale(${0.86 + 0.14 * e})`;
-        duoHinge.style.setProperty("--hinge", e > .9 ? (e - .9) * 10 : 0);
-        if (duoLabel) duoLabel.style.opacity = 1 - clamp(p * 3);
+        if (!nativeScroll) {
+          duoLeft.style.transform = `rotateY(${180 * (1 - e)}deg)`;
+          duoBody.style.transform = `translateX(${-25 * (1 - e)}%) rotateX(${8 * (1 - e)}deg) scale(${0.86 + 0.14 * e})`;
+          duoHinge.style.setProperty("--hinge", e > .9 ? (e - .9) * 10 : 0);
+          if (duoLabel) duoLabel.style.opacity = 1 - clamp(p * 3);
+        }
         if (duoVid) { const open = e > 0.97; duoVid.classList.toggle("on", open); if (open && duoVid.paused) playVid(duoVid); else if (!open && !duoVid.paused) duoVid.pause(); }
       }
 
@@ -214,7 +223,7 @@
       // Year wrap: tilt with scroll, flags pop in.
       if (wrapSec && tilt) {
         const r = wrapSec.getBoundingClientRect(), p = clamp((vh - r.top) / (vh + r.height));
-        tilt.style.transform = `rotateY(${(0.5 - p) * 28}deg) rotateX(${(p - 0.5) * 10}deg) translateZ(0)`;
+        if (!nativeScroll) tilt.style.transform = `rotateY(${(0.5 - p) * 28}deg) rotateX(${(p - 0.5) * 10}deg) translateZ(0)`;
         if (r.top < vh * 0.7) wrapSec.classList.add("in");
       }
 

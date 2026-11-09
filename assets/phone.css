@@ -54,7 +54,7 @@
 .duo .hinge { position: absolute; left: 50%; top: 2%; bottom: 2%; width: 2px; margin-left: -1px; background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.18), rgba(255,255,255,0)); z-index: 2; pointer-events: none; opacity: var(--hinge, 0); }
 .duo-shadow { position: absolute; left: 10%; right: 10%; bottom: -8%; height: 12%; background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); filter: blur(10px); z-index: -1; }
 .duo-label { position: absolute; left: 0; right: 0; bottom: 22px; z-index: 3; text-align: center; color: var(--mist); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
-@media (max-width: 760px) { .duo-wrap { width: min(94vw, calc((100svh - 450px) * 1.4216)); } .duosec { height: 220vh; } }
+@media (max-width: 760px) { .duo-wrap { width: min(88vw, calc((100svh - 450px) * 1.4216)); } .duosec { height: 220vh; } }
 @media (max-height: 720px) and (min-width: 761px) { .duosec .copy .sub { display: none; } .duo-wrap { width: min(86vw, 880px, calc((100svh - 330px) * 1.4216)); } }
 @media (prefers-reduced-motion: reduce) { .duosec { height: auto; } .duosec .stage { position: relative; height: auto; padding: 120px 0; } .duo .left { transform: none !important; } .duo { transform: none !important; } }
 

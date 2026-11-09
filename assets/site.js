@@ -168,6 +168,10 @@
   });
   const duoSec = $("#duo"), duoLeft = $("#duoLeft"), duoBody = $("#duoBody"), duoHinge = $("#duoHinge"), duoLabel = $("#duoLabel");
   const duoStage = duoSec ? $(".stage", duoSec) : null;
+  const duoWrap = duoSec ? $(".duo-wrap", duoSec) : null, phoneDuo = matchMedia("(max-width: 760px)");
+  // Safari's toolbar changes innerHeight while scrolling; only a width change (rotation) updates this.
+  let steadyVh = innerHeight, steadyW = innerWidth;
+  addEventListener("resize", () => { if (innerWidth !== steadyW) { steadyW = innerWidth; steadyVh = innerHeight; } });
   // Where the browser can tie an animation to scrolling itself (Safari 26, Chrome), it moves
   // the Duo and the Year wrap card in step with the finger; doing it here lags a frame behind
   // on iPhone and shakes. Older browsers get the same motion from this script.
@@ -203,9 +207,16 @@
 
       // Duo: fold angle follows scroll through the section.
       if (duoSec && duoLeft) {
-        // The stage's own height (100svh) doesn't change when Safari's toolbar shows or hides.
-        const r = duoSec.getBoundingClientRect(), span = r.height - (duoStage ? duoStage.offsetHeight : vh);
-        const p = clamp(-r.top / (span * 0.75));
+        let p;
+        if (phoneDuo.matches) {
+          // Phones: the Duo isn't pinned; it opens as it rises from the bottom to the middle.
+          const w = duoWrap.getBoundingClientRect();
+          p = clamp((steadyVh - w.bottom) / Math.max(1, (steadyVh - w.height) * 0.45));
+        } else {
+          // The stage's own height (100svh) doesn't change when Safari's toolbar shows or hides.
+          const r = duoSec.getBoundingClientRect(), span = r.height - (duoStage ? duoStage.offsetHeight : vh);
+          p = clamp(-r.top / (span * 0.75));
+        }
         const e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
         if (!nativeScroll) {
           duoLeft.style.transform = `rotateY(${180 * (1 - e)}deg)`;

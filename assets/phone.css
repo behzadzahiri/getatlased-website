@@ -54,7 +54,14 @@
 .duo .hinge { position: absolute; left: 50%; top: 2%; bottom: 2%; width: 2px; margin-left: -1px; background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.18), rgba(255,255,255,0)); z-index: 2; pointer-events: none; opacity: var(--hinge, 0); }
 .duo-shadow { position: absolute; left: 10%; right: 10%; bottom: -8%; height: 12%; background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); filter: blur(10px); z-index: -1; }
 .duo-label { position: absolute; left: 0; right: 0; bottom: 22px; z-index: 3; text-align: center; color: var(--mist); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
-@media (max-width: 760px) { .duo-wrap { width: min(88vw, calc((100svh - 450px) * 1.4216)); } .duosec { height: 220vh; } }
+/* Phones: no pinning. A pinned, screen-filling 3D scene judders on iPhone while Safari
+   scrolls, so here the Duo moves with the page and unfolds as it rises to the middle. */
+@media (max-width: 760px) {
+  .duosec { height: auto; }
+  .duosec .stage { position: relative; height: auto; padding: 96px 0 110px; overflow: clip; contain: none; }
+  .duo-wrap { width: min(88vw, 440px); }
+  .duo-label { display: none; }
+}
 @media (max-height: 720px) and (min-width: 761px) { .duosec .copy .sub { display: none; } .duo-wrap { width: min(86vw, 880px, calc((100svh - 330px) * 1.4216)); } }
 @media (prefers-reduced-motion: reduce) { .duosec { height: auto; } .duosec .stage { position: relative; height: auto; padding: 120px 0; } .duo .left { transform: none !important; } .duo { transform: none !important; } }
 
@@ -63,6 +70,7 @@
 .duo-vid { position: absolute; z-index: 1; left: 2.12%; right: 2.12%; top: 3.01%; bottom: 3.01%; width: 95.76%; height: 93.98%;
   object-fit: cover; border-radius: 3% / 4.3%; opacity: 0; transition: opacity .45s ease; transform: translateZ(1px); pointer-events: none; }
 .duo-vid.on { opacity: 1; }
+.duo-vid:not(.on) { transition: none; } /* gone at once when it starts to fold, fades in only when open */
 .duo .hinge { z-index: 2; }
 
 /* Scroll-driven motion, run by the browser in step with scrolling (Safari 26+, Chrome).
@@ -73,6 +81,11 @@
   .scroll-native .duo .left { animation: duo-left 1ms linear both; animation-timeline: --duo; animation-range: contain 0% contain 75%; }
   .scroll-native .duo .hinge { animation: duo-hinge 1ms linear both; animation-timeline: --duo; animation-range: contain 0% contain 75%; }
   .scroll-native .duo-label { animation: duo-label 1ms linear both; animation-timeline: --duo; animation-range: contain 0% contain 25%; }
+  @media (max-width: 760px) {
+    .scroll-native .duosec { view-timeline: none; }
+    .scroll-native .duo-wrap { view-timeline: --duo block; }
+    .scroll-native .duo, .scroll-native .duo .left, .scroll-native .duo .hinge { animation-range: contain 0% contain 45%; }
+  }
   .scroll-native .wrapsec { view-timeline: --wrap block; }
   .scroll-native .wrap-card .tilt { animation: wrap-tilt 1ms linear both; animation-timeline: --wrap; animation-range: cover 0% cover 100%; }
 }

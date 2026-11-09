@@ -323,23 +323,25 @@ h2 .serif { font-size: 1.1em; }
 
 .privacy { padding: 130px 0; }
 .privacy .head { text-align: center; }
-.pcards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 60px; }
-.pcard { padding: 30px 26px; border-radius: 26px; background: #fff; box-shadow: 0 2px 4px rgba(14,27,46,.04), 0 24px 50px -24px rgba(14,27,46,.28); transition: transform .3s, box-shadow .3s; }
-.pcard:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgba(14,27,46,.04), 0 34px 60px -24px rgba(14,27,46,.34); }
-.pcard .ic { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; color: #fff; }
-.pcard .ic svg { width: 26px; height: 26px; }
-.pcard h4 { margin: 22px 0 0; font-size: 21px; letter-spacing: -0.02em; }
-.pcard p { margin: 8px 0 0; color: var(--ink-soft); font-size: 16px; }
+.pcards { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; gap: 18px; margin-top: 60px; }
+/* Bold, solid colour cards with white words and a white line icon. */
+.pcard { position: relative; display: flex; flex-direction: column; padding: 28px 26px 30px; border-radius: 28px; color: #fff;
+  box-shadow: 0 26px 50px -30px rgba(14,27,46,.55); transition: transform .3s; }
+.pcard:hover { transform: translateY(-4px); }
+.pcard .ic { width: 44px; height: 44px; display: grid; place-items: center; color: #fff; }
+.pcard .ic svg { width: 40px; height: 40px; stroke-width: 1.8; }
+.pcard h4 { margin: 26px 0 0; font-size: 24px; line-height: 1.1; letter-spacing: -0.02em; color: #fff; }
+.pcard p { margin: 10px 0 0; color: rgba(255,255,255,.88); font-size: 16px; }
 @media (max-width: 960px) { .pcards { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 540px) {
   .privacy { padding: 90px 0; }
-  /* Phones: compact rows, the icon beside the words. */
-  .pcards { grid-template-columns: 1fr; gap: 10px; margin-top: 40px; }
-  .pcard { display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; align-items: center; padding: 15px 18px; border-radius: 20px; }
-  .pcard .ic { width: 40px; height: 40px; border-radius: 12px; grid-row: span 2; align-self: start; }
-  .pcard .ic svg { width: 20px; height: 20px; }
-  .pcard h4 { margin: 0; font-size: 16.5px; }
-  .pcard p { margin: 2px 0 0; font-size: 14.5px; line-height: 1.4; }
+  /* Phones: equal rows, words on the left and the icon on the right. */
+  .pcards { grid-template-columns: 1fr; grid-auto-rows: 1fr; gap: 12px; margin-top: 40px; }
+  .pcard { display: grid; grid-template-columns: 1fr 44px; column-gap: 16px; align-content: center; padding: 20px 22px; border-radius: 22px; }
+  .pcard .ic { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .pcard .ic svg { width: 36px; height: 36px; }
+  .pcard h4 { grid-column: 1; grid-row: 1; margin: 0; font-size: 19px; }
+  .pcard p { grid-column: 1; grid-row: 2; margin: 4px 0 0; font-size: 14.5px; line-height: 1.4; }
 }
 
 /* Final */

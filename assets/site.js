@@ -1,4 +1,4 @@
-// Atlased — getatlased.com. Small, dependency-free scroll animations.
+// Atlased, getatlased.com. Small, dependency-free scroll animations.
 (() => {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $ = (s, r = document) => r.querySelector(s);
@@ -127,9 +127,15 @@
       }
     });
     setTimeout(() => svg.addComets && svg.addComets(), steps.length * 45 + 600);
-    counters.forEach(n => {
-      const to = Number(n.dataset.count), t0 = performance.now();
-      const tick = now => { const t = clamp((now - t0) / 2000), e = 1 - Math.pow(1 - t, 3); n.textContent = Math.round(to * e).toLocaleString(); if (t < 1) requestAnimationFrame(tick); };
+  };
+  // The numbers count up when the stats row itself comes into view.
+  const statsRow = counters.length ? counters[0].closest(".stats") : null;
+  let countersPlayed = false;
+  const playCounters = () => {
+    if (countersPlayed) return; countersPlayed = true;
+    counters.forEach((n, k) => {
+      const to = Number(n.dataset.count), t0 = performance.now() + k * 120;
+      const tick = now => { const t = clamp((now - t0) / 2200), e = 1 - Math.pow(1 - t, 3); n.textContent = Math.round(to * e).toLocaleString(); if (t < 1) requestAnimationFrame(tick); };
       requestAnimationFrame(tick);
     });
   };
@@ -144,6 +150,12 @@
   // ---- Scroll-driven pieces ----
   const nav = $(".nav"), heroPhone = $("#heroPhone");
   const storySteps = $$(".story-steps .step"), storyShots = $$(".story-phone .sv"), bar = $("#storyBar"), story = $(".story");
+  const storyTints = $$(".story-phone .tint"), storyFloats = $$(".story-phone .floats");
+  // Phones show every step at once, so each step's panel gets a copy of its cards.
+  $$(".mstage").forEach(m => {
+    const f = $(`.story-phone .floats[data-step="${m.dataset.step}"]`);
+    if (f) { const copy = f.cloneNode(true); copy.classList.add("on"); m.appendChild(copy); }
+  });
   const duoSec = $("#duo"), duoLeft = $("#duoLeft"), duoBody = $("#duoBody"), duoHinge = $("#duoHinge"), duoLabel = $("#duoLabel");
   const wrapSec = $(".wrapsec"), tilt = $("#tilt"), finalBg = $("#finalBg"), finalSec = $(".final");
   let current = -1;
@@ -155,7 +167,8 @@
       showVisible();
 
       // Hero phone rises a little faster than the page.
-      if (heroPhone) heroPhone.style.transform = `translateY(${-Math.min(y, vh) * 0.18}px)`;
+      // (only a little, so it never slides up over the App Store badge)
+      if (heroPhone) heroPhone.style.transform = `translateY(${-Math.min(y * 0.18, innerWidth < 760 ? 0 : 44)}px)`;
 
       // Story: the step nearest the middle of the screen leads.
       if (storySteps.length) {
@@ -165,6 +178,8 @@
           current = best;
           storySteps.forEach((s, k) => s.classList.toggle("active", k === best));
           storyShots.forEach((im, k) => im.classList.toggle("on", k === best));
+          storyTints.forEach((t, k) => t.classList.toggle("on", k === best));
+          storyFloats.forEach((f, k) => f.classList.toggle("on", k === best));
         }
         if (bar && story) { const r = story.getBoundingClientRect(); bar.style.height = `${clamp((vh / 2 - r.top) / r.height) * 100}%`; }
       }
@@ -182,6 +197,7 @@
 
       // Map starts drawing when it's well in view.
       if (svg && !mapPlayed) { const r = svg.getBoundingClientRect(); if (r.top < vh * 0.78 && r.bottom > 0) playMap(); }
+      if (statsRow && !countersPlayed) { const r = statsRow.getBoundingClientRect(); if (r.top < vh * 0.92 && r.bottom > 0) playCounters(); }
 
       // Year wrap: tilt with scroll, flags pop in.
       if (wrapSec && tilt) {

@@ -1,4 +1,4 @@
-/* Atlased — getatlased.com */
+/* Atlased, getatlased.com */
 @font-face { font-family: "DM Sans"; font-weight: 400; font-display: swap; src: url("fonts/dm-sans-400.ttf") format("truetype"); }
 @font-face { font-family: "DM Sans"; font-weight: 500; font-display: swap; src: url("fonts/dm-sans-500.ttf") format("truetype"); }
 @font-face { font-family: "DM Sans"; font-weight: 600; font-display: swap; src: url("fonts/dm-sans-600.ttf") format("truetype"); }
@@ -54,13 +54,18 @@ a { color: inherit; text-decoration: none; }
 .btn:hover { transform: translateY(-1px); }
 @media (max-width: 760px) { .nav-links a:not(.btn) { display: none; } .nav .btn { padding: 8px 14px; font-size: 13px; } }
 
+/* App Store badge, in Apple's proportions: black, large logo, small line over "App Store".
+   At launch this becomes Apple's official "Download on the App Store" badge. */
 .store {
-  display: inline-flex; align-items: center; gap: 12px; padding: 14px 24px 14px 20px; border-radius: 18px;
-  background: #fff; color: #0B1628; font-weight: 600; font-size: 19px; line-height: 1.1;
-  box-shadow: 0 20px 40px -18px rgba(0,0,0,.6);
+  display: inline-flex; align-items: center; gap: 10px; height: 58px; padding: 0 20px 0 14px; border-radius: 12px;
+  background: #000; color: #fff; line-height: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-shadow: 0 16px 36px -16px rgba(0,0,0,.7);
 }
-.store svg { width: 26px; height: 26px; }
-.store small { display: block; font-size: 11px; font-weight: 500; color: #5b6578; letter-spacing: .02em; margin-bottom: 2px; }
+.store svg { width: 26px; height: 33px; flex: none; margin-top: -2px; }
+.store span { display: flex; flex-direction: column; gap: 2px; text-align: left; }
+.store small { display: block; font-size: 12.5px; font-weight: 500; letter-spacing: .01em; color: #fff; }
+.store b { display: block; font-size: 25px; font-weight: 600; letter-spacing: -0.02em; }
 
 /* Hero */
 .hero { position: relative; z-index: 2; min-height: 100svh; display: grid; place-items: center; text-align: center; isolation: isolate; padding: 130px 0 0; }
@@ -110,7 +115,7 @@ h2 .serif { font-size: 1.1em; }
 
 /* Scrollytelling: three steps beside a sticky phone */
 .story { position: relative; padding: 20px 0 80px; }
-.story-grid { display: grid; grid-template-columns: 1fr minmax(260px, 360px); gap: 90px; }
+.story-grid { display: grid; grid-template-columns: 1fr minmax(400px, 520px); gap: 80px; }
 .story-steps .step { min-height: 88vh; display: flex; flex-direction: column; justify-content: center; opacity: .25; transition: opacity .6s; }
 .story-steps .step.active { opacity: 1; }
 .step .num { width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center; font-weight: 700; font-size: 19px; color: #fff; }
@@ -118,7 +123,7 @@ h2 .serif { font-size: 1.1em; }
 .step p { font-size: 19px; max-width: 26em; margin: 18px 0 0; color: var(--ink-soft); }
 .step .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 .tag { font-size: 14px; font-weight: 600; padding: 7px 13px; border-radius: 999px; background: #fff; box-shadow: 0 6px 16px -8px rgba(14,27,46,.28); }
-.story-phone { position: sticky; top: max(90px, calc(50vh - 380px)); height: min(76vh, 760px); }
+.story-phone { position: sticky; top: max(84px, calc(50vh - 380px)); height: min(80vh, 760px); }
 .story-phone .phone { height: 100%; width: auto; margin-left: auto; }
 .story-phone .bar { position: absolute; left: -30px; top: 15%; bottom: 15%; width: 4px; border-radius: 4px; background: rgba(14,27,46,.08); overflow: hidden; }
 .story-phone .bar i { position: absolute; inset: 0 0 auto 0; height: 0; border-radius: 4px; background: linear-gradient(var(--orange), var(--sun)); }
@@ -132,20 +137,82 @@ h2 .serif { font-size: 1.1em; }
   .story-grid { grid-template-columns: 1fr; gap: 0; }
   .story-phone { display: none; }
   .story-steps .step { min-height: 0; opacity: 1; padding: 30px 0 60px; align-items: center; text-align: center; }
-  .step .mphone { width: min(250px, 64vw); margin: 0 auto 30px; }
+  .step .mstage { margin: 0 auto 34px; }
   .step .num { margin: 0 auto; }
   .step p { margin-inline: auto; }
   .step .tags { justify-content: center; }
 }
-.mphone { display: none; }
-@media (max-width: 900px) { .mphone { display: block; } }
+
+/* The phone stands on a coloured panel that changes with the step,
+   with raised cards from the app floating around it. */
+.story-phone .stage { position: relative; height: 100%; border-radius: 40px; display: grid; place-items: center;
+  box-shadow: 0 2px 4px rgba(14,27,46,.05), 0 44px 80px -44px rgba(14,27,46,.55); }
+.tint { position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity .8s ease; }
+.tint.on { opacity: 1; }
+.dots { position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,.34) 1.3px, transparent 1.9px); background-size: 20px 20px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 100%); mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 100%); }
+.story-phone .stage .iphone { position: relative; z-index: 1; height: 86%; width: auto; margin: 0; }
+.floats { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.fc { position: absolute; opacity: 0; transform: translateY(18px) scale(.94); transition: opacity .45s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+.floats.on .fc { opacity: 1; transform: none; }
+.floats.on .fc:nth-child(2) { transition-delay: .12s; }
+.floats.on .fc:nth-child(3) { transition-delay: .24s; }
+.fc .in { background: #fff; color: var(--ink); border-radius: 20px; box-shadow: 0 2px 4px rgba(14,27,46,.06), 0 26px 46px -20px rgba(14,27,46,.5); animation: bob 7s ease-in-out infinite; }
+.fc:nth-child(2) .in { animation-duration: 8s; animation-delay: -2.5s; }
+.fc:nth-child(3) .in { animation-duration: 6.5s; animation-delay: -4s; }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+.f1 { left: -64px; top: 10%; }
+.f2 { right: -44px; top: 43%; }
+.f3 { left: -40px; bottom: 10%; }
+@media (max-width: 1260px) { .f2 { right: -14px; } }
+.toast { display: flex; align-items: center; gap: 12px; padding: 12px 18px 12px 12px; }
+.toast .ico { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; color: #fff; flex: none; }
+.toast .ico svg { width: 21px; height: 21px; }
+.toast b { display: block; font-size: 15.5px; letter-spacing: -0.01em; white-space: nowrap; }
+.toast small { display: block; font-size: 13px; color: var(--ink-soft); margin-top: 2px; white-space: nowrap; }
+.toast.stay > img { width: 46px; height: 46px; border-radius: 12px; object-fit: cover; flex: none; }
+.pillc { display: flex; align-items: center; gap: 8px; padding: 11px 17px 11px 13px; border-radius: 999px; font-weight: 700; font-size: 14.5px; white-space: nowrap; }
+.pillc svg { width: 19px; height: 19px; display: block; }
+.pillc.route { gap: 7px; }
+.pillc.route i { width: 9px; height: 9px; border-radius: 50%; background: var(--coral); margin-right: 2px; }
+.pillc.route em { font-style: normal; color: var(--teal); }
+.snaps { padding: 10px 12px 12px; display: grid; justify-items: center; }
+.snaps .row { display: flex; }
+.snaps .row img { width: 70px; height: 88px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 16px -8px rgba(0,0,0,.45); }
+.snaps .row img:first-child { transform: rotate(-7deg) translateX(8px); }
+.snaps .row img:last-child { transform: rotate(6deg) translate(-8px, -4px); }
+.snaps .cap { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 13.5px; font-weight: 700; }
+.snaps .cap img { width: 16px; height: 16px; border-radius: 50%; }
+.flagsc { padding: 14px 18px 14px 16px; }
+.flagsc .row { display: flex; align-items: center; }
+.flagsc .row > * { width: 34px; height: 34px; border-radius: 50%; margin-left: -8px; box-shadow: -3px 0 6px -2px rgba(14,27,46,.3); }
+.flagsc .row > :first-child { margin-left: 0; box-shadow: none; }
+.flagsc .more { display: grid; place-items: center; background: #EEF2F7; color: var(--ink-soft); font-size: 12px; font-weight: 700; }
+.flagsc b { display: block; margin-top: 10px; font-size: 15.5px; letter-spacing: -0.01em; }
+.ring { display: flex; align-items: center; gap: 12px; padding: 13px 20px 13px 13px; }
+.ring .ringsvg { width: 52px; height: 52px; flex: none; }
+.ring b { display: block; font-size: 24px; letter-spacing: -0.03em; line-height: 1; }
+.ring small { display: block; margin-top: 3px; font-size: 13px; color: var(--ink-soft); }
+
+/* Phones: one panel per step */
+.mstage { display: none; }
+@media (max-width: 900px) {
+  .mstage { display: grid; place-items: center; position: relative; width: min(360px, 88vw); padding: 34px 0; border-radius: 34px;
+    box-shadow: 0 2px 4px rgba(14,27,46,.05), 0 34px 60px -34px rgba(14,27,46,.5); }
+  .mstage .iphone { position: relative; z-index: 1; width: 66%; }
+  .mstage .fc { scale: .82; }
+  .mstage .f1 { left: -10px; top: 7%; transform-origin: left top; }
+  .mstage .f2 { right: -10px; top: 46%; transform-origin: right center; }
+  .mstage .f3 { left: -10px; bottom: 8%; transform-origin: left bottom; }
+}
+@media (prefers-reduced-motion: reduce) { .fc .in { animation: none; } }
 
 /* Postcards marquee */
 .postcards { padding: 120px 0 130px; overflow: hidden; background: var(--paper-2); color: var(--ink); }
 .postcards .head { text-align: center; margin-bottom: 56px; }
 .lane { display: flex; gap: 22px; width: max-content; animation: drift 80s linear infinite; padding: 14px 0; }
 .lane.rev { animation-direction: reverse; animation-duration: 95s; margin-top: 18px; }
-.postcards:hover .lane { animation-play-state: paused; }
 @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .card-p {
   position: relative; width: 300px; aspect-ratio: 4 / 3; border-radius: 22px; overflow: hidden; flex: none;

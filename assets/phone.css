@@ -58,7 +58,7 @@
    scrolls, so here the Duo moves with the page and unfolds as it rises to the middle. */
 @media (max-width: 760px) {
   .duosec { height: auto; }
-  .duosec .stage { position: relative; height: auto; padding: 96px 0 110px; overflow: clip; contain: none; }
+  .duosec .stage { position: relative; height: auto; padding: 88px 0 44px; overflow: clip; contain: none; }
   .duo-wrap { width: min(88vw, 440px); }
   .duo-label { display: none; }
 }

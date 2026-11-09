@@ -231,7 +231,7 @@ h2 .serif { font-size: 1.1em; }
 .card-p::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 45%, rgba(0,0,0,.62)); }
 .card-p .label { position: absolute; left: 16px; bottom: 14px; z-index: 1; color: #fff; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 9px; }
 .card-p .label img { width: 24px; height: 24px; border-radius: 50%; }
-@media (max-width: 760px) { .card-p { width: 220px; } .postcards { padding: 90px 0 100px; } }
+@media (max-width: 760px) { .card-p { width: 220px; } .postcards { padding: 64px 0 100px; } }
 
 /* Map */
 .mapsec { padding: 130px 0; background: var(--night); }

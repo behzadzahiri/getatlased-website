@@ -5,6 +5,15 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 
+  // ---- A refresh starts at the top, like a first visit. Coming back with the Back button
+  // still returns to where you were, so the browser's own behaviour is put back on leaving. ----
+  const [arrival] = performance.getEntriesByType("navigation");
+  if (arrival && arrival.type === "reload" && !location.hash && "scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+    scrollTo(0, 0);
+    addEventListener("pagehide", () => { history.scrollRestoration = "auto"; });
+  }
+
   // ---- Reveal on scroll (content is visible without JavaScript) ----
   const reveals = $$(".rv");
   const showVisible = () => reveals.forEach(el => {

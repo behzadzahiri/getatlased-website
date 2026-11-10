@@ -32,6 +32,9 @@ html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
    moving parts keep their painting inside their box. Clip never makes a scroll box, so
    the sticky phone and Duo still stick. */
 body > section, body > footer, main > section { overflow-x: clip; }
+/* Sections end on fractions of a pixel, and the dark page behind showed through the join as a
+   hairline. Each one starts a pixel up, over the end of the one before, so nothing shows between. */
+main > section + section, main + footer { margin-top: -1px; }
 .duosec .stage, .wrapsec, .postcards, .sharesec, .hero .slides { contain: paint; }
 img, video { max-width: 100%; }
 body {
@@ -99,6 +102,24 @@ h1 .serif { font-size: 1.1em; letter-spacing: -0.02em; text-shadow: none; }
 .insta svg { width: 22px; height: 22px; }
 .hero-phone { position: relative; margin: 76px auto 0; width: min(330px, 74vw); z-index: 2; margin-bottom: -320px; }
 @media (max-width: 760px) { .hero-phone { margin-bottom: -220px; } }
+/* Phones: a calm first screen. The place as one quiet line, the headline, three lines of copy,
+   one badge, and the app itself already in view. The photo sits further back so the words read. */
+@media (max-width: 760px) {
+  .hero { padding-top: 106px; }
+  .hero::before { background: linear-gradient(180deg, rgba(6,13,26,.76) 0%, rgba(6,13,26,.62) 24%, rgba(6,13,26,.66) 50%, rgba(6,13,26,.5) 68%, var(--paper) 99%); }
+  .place-chip { padding: 0; gap: 8px; background: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+    font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: rgba(246,248,251,.84); }
+  .place-chip img { width: 16px; height: 16px; }
+  h1 { font-size: clamp(34px, 11.6vw, 54px); margin-top: 16px; }
+  .lede { font-size: 17px; line-height: 1.5; max-width: 20.5em; margin-top: 18px; text-wrap: balance; }
+  .lede-more { display: none; }
+  .hero .ctas { margin-top: 26px; }
+  .hero .insta { display: none; }
+  .hero-phone { margin-top: 42px; }
+  /* The badge already says when; the pill in the bar appears once the badge has scrolled away. */
+  .js .nav .btn { opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s, transform .2s; }
+  .js .nav.past .btn { opacity: 1; visibility: visible; }
+}
 
 /* Phone frame */
 .phone {
@@ -121,7 +142,7 @@ h2 .serif { font-size: 1.1em; }
 .sub { font-size: clamp(18px, 1.8vw, 21px); max-width: 32em; margin: 22px auto 0; }
 
 /* Scrollytelling: three steps beside a sticky phone */
-.story { position: relative; padding: 20px 0 80px; }
+.story { position: relative; padding-top: 20px; }
 .story-grid { display: grid; grid-template-columns: 1fr minmax(400px, 520px); gap: 80px; }
 .story-steps .step { min-height: 88vh; display: flex; flex-direction: column; justify-content: center; opacity: .25; transition: opacity .6s; }
 .story-steps .step.active { opacity: 1; }
@@ -216,25 +237,27 @@ h2 .serif { font-size: 1.1em; }
 @media (prefers-reduced-motion: reduce) { .fc .in { animation: none; } }
 
 /* Postcards marquee */
-.postcards { padding: 120px 0 130px; overflow: hidden; background: var(--paper-2); color: var(--ink); }
+.postcards { overflow: hidden; background: var(--paper-2); color: var(--ink); }
 .postcards .head { text-align: center; margin-bottom: 56px; }
 .lane { display: flex; gap: 22px; width: max-content; animation: drift 80s linear infinite; padding: 14px 0; }
 .lane.rev { animation-direction: reverse; animation-duration: 95s; margin-top: 18px; }
 @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* With JavaScript the rows are moved by site.js instead (see the note there). */
+.lanes-js .lane { animation: none; will-change: transform; }
 .card-p {
   position: relative; width: 300px; aspect-ratio: 4 / 3; border-radius: 22px; overflow: hidden; flex: none;
   box-shadow: 0 24px 50px -28px rgba(14,27,46,.6); transform: rotate(var(--r, 0deg));
   transition: transform .35s cubic-bezier(.2,.7,.2,1);
 }
 .card-p:hover { transform: rotate(0deg) scale(1.05); }
-.card-p img.photo { width: 100%; height: 100%; object-fit: cover; }
+.card-p img.photo { width: 100%; height: 100%; object-fit: cover; background: #DCCFBB; }
 .card-p::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 45%, rgba(0,0,0,.62)); }
 .card-p .label { position: absolute; left: 16px; bottom: 14px; z-index: 1; color: #fff; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 9px; }
 .card-p .label img { width: 24px; height: 24px; border-radius: 50%; }
-@media (max-width: 760px) { .card-p { width: 220px; } .postcards { padding: 64px 0 100px; } }
+@media (max-width: 760px) { .card-p { width: 220px; } }
 
 /* Map */
-.mapsec { padding: 130px 0; background: var(--night); }
+.mapsec { background: var(--night); }
 .mapsec .head { text-align: center; }
 .map-card { width: min(100%, 980px); margin: 56px auto 0; border-radius: 30px; overflow: hidden; position: relative; background: #0F2440; box-shadow: 0 40px 90px -30px rgba(0,0,0,.85), 0 2px 0 rgba(255,255,255,.04) inset; }
 .map-card .map { position: relative; aspect-ratio: 1000 / 480; }
@@ -253,10 +276,11 @@ h2 .serif { font-size: 1.1em; }
 .stat b { display: block; font-size: clamp(30px, 3.6vw, 46px); color: #fff; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }
 .stat span { display: block; margin-top: 8px; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
 .map-note { color: #7F8FA8; font-size: 13px; margin-top: 16px; text-align: center; }
-@media (max-width: 760px) { .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 20px; margin-top: 34px; } .mapsec { padding: 90px 0; } }
+@media (max-width: 760px) { .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 20px; margin-top: 34px; } }
 
 /* Year wrap */
-.wrapsec { position: relative; padding: 140px 0; background: radial-gradient(120% 80% at 50% 0%, #142A4A, var(--night) 70%); overflow: hidden; }
+/* The glow rises out of the dark section above; there is no edge where the two meet. */
+.wrapsec { position: relative; background: linear-gradient(180deg, var(--night), rgba(6,13,26,0) 150px), radial-gradient(120% 80% at 50% 0%, #142A4A, var(--night) 70%); overflow: hidden; }
 .wrap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
 .wrap-card { position: relative; width: min(360px, 76vw); margin: 0 auto; perspective: 1200px; }
 .wrap-card .tilt { transform-style: preserve-3d; will-change: transform; }
@@ -267,11 +291,11 @@ h2 .serif { font-size: 1.1em; }
 .wrapsec .list li { display: flex; gap: 14px; align-items: center; font-size: 18px; color: var(--mist); }
 .wrapsec .list li b { color: #fff; font-weight: 600; }
 .dotc { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-@media (max-width: 900px) { .wrap-grid { grid-template-columns: 1fr; gap: 70px; } .wrapsec .copy { text-align: center; } .wrapsec .list { justify-items: center; } .wrapsec { padding: 100px 0; } }
+@media (max-width: 900px) { .wrap-grid { grid-template-columns: 1fr; gap: 70px; } .wrapsec .copy { text-align: center; } .wrapsec .list { justify-items: center; } }
 
 /* Privacy */
 /* Sharing: an itinerary card and a trip's photos, raised and slightly turned */
-.sharesec { position: relative; padding: 130px 0; background: var(--paper-2); color: var(--ink); overflow: hidden; }
+.sharesec { position: relative; background: var(--paper-2); color: var(--ink); overflow: hidden; }
 .share-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 70px; align-items: center; }
 .sharesec .sub { margin-inline: 0; }
 .slist { list-style: none; padding: 0; margin: 30px 0 0; display: grid; gap: 14px; }
@@ -314,14 +338,12 @@ h2 .serif { font-size: 1.1em; }
 .sharebtn svg { width: 3.4cqw; height: 3.4cqw; }
 @media (max-width: 900px) {
   .share-grid { grid-template-columns: 1fr; gap: 56px; }
-  .sharesec { padding: 100px 0; }
   .sharesec .copy { order: -1; text-align: center; }
   .sharesec .sub { margin-inline: auto; }
   .slist { width: fit-content; max-width: 100%; margin-inline: auto; text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) { .itin, .pics { animation: none; } }
 
-.privacy { padding: 130px 0; }
 .privacy .head { text-align: center; }
 .pcards { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; gap: 18px; margin-top: 60px; }
 /* Bold, solid colour cards with white words and a white line icon. */
@@ -334,7 +356,6 @@ h2 .serif { font-size: 1.1em; }
 .pcard p { margin: 10px 0 0; color: rgba(255,255,255,.88); font-size: 16px; }
 @media (max-width: 960px) { .pcards { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 540px) {
-  .privacy { padding: 90px 0; }
   /* Phones: equal rows, words on the left and the icon on the right. */
   .pcards { grid-template-columns: 1fr; grid-auto-rows: 1fr; gap: 12px; margin-top: 40px; }
   .pcard { display: grid; grid-template-columns: 1fr 44px; column-gap: 16px; align-content: center; padding: 20px 22px; border-radius: 22px; }
@@ -344,20 +365,79 @@ h2 .serif { font-size: 1.1em; }
   .pcard p { grid-column: 1; grid-row: 2; margin: 4px 0 0; font-size: 14.5px; line-height: 1.4; }
 }
 
-/* Final */
-.final { position: relative; padding: 170px 0 150px; text-align: center; overflow: hidden; isolation: isolate; }
-.final .bg { position: absolute; inset: -12% 0; z-index: -2; background-size: cover; background-position: center; will-change: transform; }
-.final::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, var(--paper) 0%, rgba(6,13,26,.35) 26%, rgba(6,13,26,.72) 100%); }
-.final .icon { width: 116px; height: 116px; margin: 0 auto; border-radius: 26px; }
-.final h2 { margin-top: 30px; text-shadow: 0 10px 40px rgba(0,0,0,.35); }
-.final .sub { color: rgba(246,248,251,.92); }
-.final .ctas { display: flex; justify-content: center; margin-top: 34px; }
+/* Final
+   The page closes on one picture, held in a card like the map further up: the place in full
+   colour, and the words on the dark the picture fades into. Side by side on wide screens, the
+   picture above the words on narrow ones. --shot is how tall the picture is when it is on top. */
+.final { position: relative; padding-bottom: 84px; background: linear-gradient(180deg, var(--night), #08111F); }
+.poster { --shot: clamp(270px, 72vw, 540px); position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center;
+  min-height: clamp(540px, 46vw, 640px); border-radius: 36px; background: #0C1A31; box-shadow: 0 50px 100px -40px rgba(0,0,0,.9); }
+/* The picture fades out by a mask of its own, not under a layer of colour: a layer would let a
+   bright sliver of the picture show along the card's edge. */
+.poster .shot { position: absolute; inset: 0 0 0 42%; z-index: -1; overflow: hidden;
+  /* A smooth curve in eleven steps: a fade that changes pace part way shows as a faint edge on the sky. */
+  --fade: linear-gradient(90deg, transparent 4%, rgba(0,0,0,.028) 8.4%, rgba(0,0,0,.104) 12.8%, rgba(0,0,0,.216) 17.2%, rgba(0,0,0,.352) 21.6%, rgba(0,0,0,.5) 26%, rgba(0,0,0,.648) 30.4%, rgba(0,0,0,.784) 34.8%, rgba(0,0,0,.896) 39.2%, rgba(0,0,0,.972) 43.6%, #000 48%);
+  -webkit-mask-image: var(--fade); mask-image: var(--fade); }
+/* It is taller than its frame by 60px each way: site.js drifts it a little as the page scrolls. */
+.poster .bg { position: absolute; inset: -60px 0; background-size: cover; background-position: 50% 70%; will-change: transform; }
+.poster-copy { width: min(54%, 600px); padding: 64px 0 64px clamp(40px, 5vw, 72px); }
+.poster .icon { width: 72px; height: 72px; border-radius: 17px; box-shadow: 0 18px 34px -12px rgba(0,0,0,.7), 0 2px 6px rgba(0,0,0,.35); }
+.poster h2 { margin-top: 28px; font-size: clamp(40px, 4.5vw, 60px); line-height: 1.02; text-wrap: balance; }
+.poster .sub { margin: 20px 0 0; color: var(--mist); }
+.poster .ctas { display: flex; margin-top: 34px; }
+@media (max-width: 900px) {
+  .final { padding-bottom: 56px; }
+  .poster { display: block; min-height: 0; text-align: center; border-radius: 30px; }
+  .poster .shot { inset: 0 0 auto; height: var(--shot);
+    --fade: linear-gradient(180deg, #000 52%, rgba(0,0,0,.972) 56.8%, rgba(0,0,0,.896) 61.6%, rgba(0,0,0,.784) 66.4%, rgba(0,0,0,.648) 71.2%, rgba(0,0,0,.5) 76%, rgba(0,0,0,.352) 80.8%, rgba(0,0,0,.216) 85.6%, rgba(0,0,0,.104) 90.4%, rgba(0,0,0,.028) 95.2%, transparent 100%); }
+  /* Sized from the frame's height, so the same slice of the picture shows at every width. */
+  .poster .bg { inset: -40px 0; background-size: auto calc(var(--shot) * 2.17); background-position: 97% 66%; }
+  .poster-copy { width: auto; padding: calc(var(--shot) - 30px) 24px 44px; }
+  .poster .icon { margin: 0 auto; }
+  .poster h2 { font-size: clamp(31px, 8.4vw, 54px); }
+  .poster .sub { margin-inline: auto; }
+  .poster .ctas { justify-content: center; }
+}
 
 /* Footer */
-footer { background: #08111F; padding: 38px 0 50px; color: #8A99B0; font-size: 14px; }
+/* The footer sits over the last pixel of the section above it, so nothing can show as a line at the join. */
+footer { position: relative; z-index: 1; background: #08111F; padding: 38px 0 50px; color: #8A99B0; font-size: 14px; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: center; justify-content: space-between; }
 footer nav { display: flex; flex-wrap: wrap; gap: 22px; }
 footer a:hover { color: #fff; }
+
+/* Where two colours meet
+   The last thing in a section sits as far above the join as the first thing in the next one sits
+   below it: 136px on wide screens, 96px on phones. The paddings differ because each section's
+   first and last thing brings some space of its own (a line's leading, a tilted card, the room
+   under a story step). The Duo's two are used by its stage in phone.css. */
+.story { padding-bottom: 137px; }
+.duosec { --duo-top: 123px; --duo-bottom: 137px; }
+.postcards { padding: 123px 0 128px; }
+.mapsec { padding: 123px 0 118px; }
+.wrapsec { padding: 146px 0 147px; }
+.sharesec { padding: 123px 0 129px; }
+.privacy { padding: 123px 0 137px; }
+.final { padding-top: 136px; }
+/* Side by side, either the words or the cards can be the taller of the two. The cards get the
+   same space of their own as the words have, so the join is the same whichever one leads. */
+@media (min-width: 901px) { .share-art { margin-block: 27px 2px; } }
+@media (max-width: 900px) {
+  .story { padding-bottom: 77px; }
+  .wrapsec { padding-top: 123px; }
+  .sharesec { padding-bottom: 131px; }
+}
+@media (max-width: 760px) {
+  .story { padding-bottom: 37px; }
+  .duosec { --duo-top: 83px; --duo-bottom: 97px; }
+  .postcards { padding: 83px 0 87px; }
+  .mapsec { padding: 83px 0 78px; }
+  .wrapsec { padding: 83px 0 102px; }
+  .sharesec { padding: 83px 0 94px; }
+  .privacy { padding: 83px 0 97px; }
+  .final { padding-top: 96px; }
+}
+/* end of the joins */
 
 /* Reveal */
 .js .rv { opacity: 0; transform: translateY(34px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
@@ -375,7 +455,7 @@ footer a:hover { color: #fff; }
 .doc-page .brand { color: var(--ink); }
 .doc-page .nav-links { color: var(--ink-soft); }
 .doc-page .nav-links a:hover { color: var(--ink); }
-.doc { padding: 70px 0 110px; }
+.doc { padding: 70px 0 66px; }
 .doc .wrap { max-width: 760px; }
 .doc .eyebrow { color: var(--orange); }
 .doc h1 { font-size: clamp(40px, 6vw, 66px); color: var(--ink); text-shadow: none; margin-top: 12px; }
@@ -385,7 +465,7 @@ footer a:hover { color: #fff; }
 .doc p { margin: 14px 0 0; }
 .doc ul { padding-left: 1.1em; margin: 14px 0 0; }
 .doc li { margin: 8px 0; }
-.doc a { color: #1E6FDB; }
+.doc a:not(.btn) { color: #1E6FDB; }
 .doc strong { color: var(--ink); font-weight: 600; }
 .faq { margin-top: 40px; display: grid; gap: 12px; }
 .faq details { background: #fff; border-radius: 20px; padding: 20px 22px; box-shadow: 0 2px 4px rgba(14,27,46,.04), 0 16px 34px -22px rgba(14,27,46,.3); }
@@ -396,7 +476,13 @@ footer a:hover { color: #fff; }
 .contact-card { margin-top: 44px; padding: 28px; border-radius: 24px; background: #fff; box-shadow: 0 2px 4px rgba(14,27,46,.04), 0 24px 50px -24px rgba(14,27,46,.3); display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; }
 .contact-card h3 { margin: 0; font-size: 21px; }
 .contact-card p { margin: 6px 0 0; color: var(--ink-soft); font-size: 15px; }
-.doc-page footer { background: var(--paper-2); color: var(--ink-soft); }
+/* Where a document meets its footer, the same rule as on the home page: as much room above the
+   join as below it. */
+.doc-page footer { background: var(--paper-2); color: var(--ink-soft); padding-block: 72px; }
+@media (max-width: 760px) { .doc { padding-bottom: 50px; } .doc-page footer { padding-block: 56px; } }
+/* A last line of text brings 7px of its own under it. A card and a list's last line get the same. */
+.contact-card { margin-bottom: 7px; }
+.credits-list li:last-child { margin-bottom: 0; }
 .doc-page footer a:hover { color: var(--ink); }
 .credits-list { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
 .credits-list li { font-size: 15px; color: var(--ink-soft); }

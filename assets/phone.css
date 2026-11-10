@@ -26,13 +26,25 @@
 @media (max-width: 900px) { .story-phone .iphone { margin: 0 auto; } }
 
 /* iPhone Duo: the left half swings open as you scroll */
-.duosec { position: relative; height: 260vh; background: var(--night); }
-.duosec .stage { position: sticky; top: 0; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(18px, 3.4vh, 40px); padding: 68px 0 64px; overflow: hidden; }
+/* The device takes the height the screen has left once the words above it, the gap and some air
+   top and bottom (--duo-clear) are counted. --duo-copy is the height of those words, worked out
+   from their type sizes (the headline's line, two lines of the sentence under it), so the size is
+   known without measuring anything. */
+.duosec { position: relative; height: 260vh; background: var(--night);
+  --duo-gap: clamp(18px, 3.4vh, 40px);
+  --duo-copy: calc(56.8px + 1.111 * clamp(38px, 5.6vw, 76px) + 3.1 * clamp(18px, 1.8vw, 21px));
+  --duo-clear: 190px;
+  --duo-h: max(160px, min(60.495vw, 619px, 100svh - var(--duo-clear) - var(--duo-gap) - var(--duo-copy))); }
+/* The stage is only as tall as what is in it and is pinned in the middle of the screen. Its padding
+   is the space to the sections above and below ("Where two colours meet" in site.css); on a short
+   screen part of that padding is off screen while it is pinned. */
+.duosec .stage { position: sticky; top: calc((100svh - var(--duo-top) - var(--duo-copy) - var(--duo-gap) - var(--duo-h) - var(--duo-bottom)) / 2);
+  display: flex; flex-direction: column; align-items: center; gap: var(--duo-gap); padding: var(--duo-top) 0 var(--duo-bottom); overflow: hidden; }
 .duosec .copy { text-align: center; z-index: 3; padding: 0 20px; }
 .duosec .copy .sub { margin-top: 14px; }
 .duosec .copy h2 { color: #fff; }
 .duosec .copy .sub { color: var(--mist); }
-.duo-wrap { width: min(86vw, 880px, calc((100svh - 420px) * 1.4216)); aspect-ratio: 2853 / 2007; perspective: 2400px; position: relative; }
+.duo-wrap { width: calc(var(--duo-h) * 1.42152); aspect-ratio: 2853 / 2007; perspective: 2400px; position: relative; }
 .duo { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; will-change: transform; }
 .duo .half { position: absolute; top: 0; bottom: 0; width: 50%; transform-style: preserve-3d; }
 .duo .right { right: 0; transform: translateZ(-3px); }
@@ -53,17 +65,18 @@
 .duo .left .back .pic { background-size: cover; background-position: center top; border-radius: 6% / 4.3%; }
 .duo .hinge { position: absolute; left: 50%; top: 2%; bottom: 2%; width: 2px; margin-left: -1px; background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.18), rgba(255,255,255,0)); z-index: 2; pointer-events: none; opacity: var(--hinge, 0); }
 .duo-shadow { position: absolute; left: 10%; right: 10%; bottom: -8%; height: 12%; background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); filter: blur(10px); z-index: -1; }
-.duo-label { position: absolute; left: 0; right: 0; bottom: 22px; z-index: 3; text-align: center; color: var(--mist); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.duo-label { position: absolute; left: 0; right: 0; bottom: calc(var(--duo-bottom) - 62px); z-index: 3; text-align: center; color: var(--mist); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
 /* Phones: no pinning. A pinned, screen-filling 3D scene judders on iPhone while Safari
    scrolls, so here the Duo moves with the page and unfolds as it rises to the middle. */
 @media (max-width: 760px) {
   .duosec { height: auto; }
-  .duosec .stage { position: relative; height: auto; padding: 88px 0 44px; overflow: clip; contain: none; }
+  .duosec .stage { position: relative; top: auto; overflow: clip; contain: none; }
   .duo-wrap { width: min(88vw, 440px); }
   .duo-label { display: none; }
 }
-@media (max-height: 720px) and (min-width: 761px) { .duosec .copy .sub { display: none; } .duo-wrap { width: min(86vw, 880px, calc((100svh - 330px) * 1.4216)); } }
-@media (prefers-reduced-motion: reduce) { .duosec { height: auto; } .duosec .stage { position: relative; height: auto; padding: 120px 0; } .duo .left { transform: none !important; } .duo { transform: none !important; } }
+/* Short windows: the headline alone, and a little less air, so the device stays a good size. */
+@media (max-height: 720px) and (min-width: 761px) { .duosec { --duo-copy: calc(42.8px + 1.111 * clamp(38px, 5.6vw, 76px)); --duo-clear: 172px; } .duosec .copy .sub { display: none; } }
+@media (prefers-reduced-motion: reduce) { .duosec { height: auto; } .duosec .stage { position: relative; top: auto; } .duo-label { display: none; } .duo .left { transform: none !important; } .duo { transform: none !important; } }
 
 /* Clips from the app inside the frames. The screenshot under each one shows until it plays. */
 .iphone .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: transparent; }
@@ -72,6 +85,23 @@
 .duo-vid.on { opacity: 1; }
 .duo-vid:not(.on) { transition: none; } /* gone at once when it starts to fold, fades in only when open */
 .duo .hinge { z-index: 2; }
+
+/* Screens that scroll with the page: one tall capture of the app moves up inside the frame,
+   under the app's own pinned header and its glass tab bar. Sizes are shares of the screen,
+   measured from the capture (1206 x 2622). */
+.iphone .screen .reel { position: absolute; inset: 0; background: #fff; overflow: clip; }
+.iphone .screen .reel-view { position: absolute; left: 0; right: 0; top: 17.239%; bottom: 0; overflow: clip; }
+.iphone .screen .reel-sheet .reel-view { top: 15.103%; bottom: 3.89%; }
+.iphone .screen .reel-img { position: static; display: block; width: 100%; height: auto; object-fit: fill; will-change: transform; }
+.iphone .screen .reel-head { inset: 0 0 auto 0; height: auto; object-fit: fill; z-index: 1; }
+.reel-fade { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 15%; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.085) 20%, rgba(255,255,255,.2) 31%, rgba(255,255,255,.45) 46%, rgba(255,255,255,.72) 66%, rgba(255,255,255,.86) 100%); }
+.reel-glass { position: absolute; z-index: 1; left: 15.92%; width: 68.33%; top: 90.62%; height: 6.865%; border-radius: 999px; pointer-events: none;
+  background: rgba(255,255,255,.3); -webkit-backdrop-filter: blur(8px) saturate(160%); backdrop-filter: blur(8px) saturate(160%); box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+.iphone .screen .reel-tab { inset: auto; left: 12.438%; top: 89.245%; width: 75.124%; height: auto; object-fit: fill; z-index: 2; }
+/* A soft edge where the list slides under the app's header. */
+.reel-list::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; top: 17.2%; height: 2.4%; pointer-events: none; background: linear-gradient(180deg, #fff, rgba(255,255,255,0)); }
+@keyframes reel { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, var(--reel-to, -50%), 0); } }
 
 /* Scroll-driven motion, run by the browser in step with scrolling (Safari 26+, Chrome).
    Same curves as site.js, which only does this where these aren't supported. */
@@ -84,9 +114,15 @@
   @media (max-width: 760px) {
     .scroll-native .duosec { view-timeline: none; }
     .scroll-native .duo-wrap { view-timeline: --duo block; }
-    .scroll-native .duo, .scroll-native .duo .left, .scroll-native .duo .hinge { animation-range: contain 0% contain 45%; }
+    /* It starts to open once half of it is on screen and is flat a little above the middle:
+       most of a screen of scrolling, so it reads as an unfolding and not a snap. */
+    .scroll-native .duo, .scroll-native .duo .left, .scroll-native .duo .hinge { animation-range: entry 50% contain 55%; }
   }
   .scroll-native .wrapsec { view-timeline: --wrap block; }
+  /* The hero's list starts at its top when the page does and has run by the time its phone has gone. */
+  .scroll-native .hero-phone .reel-img { animation: reel 1ms linear both; animation-timeline: scroll(root block); animation-range: 0px var(--hero-end, 1200px); }
+  .scroll-native .mstage { view-timeline: --mstage block; }
+  .scroll-native .mstage .reel-img { animation: reel 1ms linear both; animation-timeline: --mstage; animation-range: cover 12% cover 88%; }
   .scroll-native .wrap-card .tilt { animation: wrap-tilt 1ms linear both; animation-timeline: --wrap; animation-range: cover 0% cover 100%; }
 }
 /* Ease in and out over the opening, like the script's curve. */

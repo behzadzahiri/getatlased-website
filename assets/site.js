@@ -34,6 +34,40 @@
 
   // ---- Postcards: duplicate each lane once for a seamless loop ----
   $$(".lane").forEach(lane => [...lane.children].forEach(c => lane.appendChild(c.cloneNode(true))));
+  // Two things could leave a row empty on a phone. The photos were lazy, and a browser only
+  // loads a lazy photo once it is nearly on screen, which a card sliding in sideways reaches too
+  // late. And each row is one very wide layer that a CSS animation moved without the page ever
+  // being drawn again, so Safari could skip painting the part that slid into view. So every
+  // photo loads as the section gets close, and the rows are moved here, a frame at a time, only
+  // while they are on screen. Without JavaScript the CSS animation still runs.
+  const postcards = $(".postcards");
+  if (postcards) {
+    const loadCards = () => $$(".lane img.photo", postcards).forEach(im => { im.loading = "eager"; });
+    const rows = $$(".lane", postcards).map(el => ({ el, rev: el.classList.contains("rev"), dur: el.classList.contains("rev") ? 95000 : 80000, period: 0 }));
+    // One loop is exactly the distance from a card to its copy.
+    const measure = () => rows.forEach(r => { const c = r.el.children; r.period = c.length > 1 ? c[c.length / 2].offsetLeft - c[0].offsetLeft : 0; });
+    let t = 0, last = 0, raf = 0, onScreen = false;
+    const tick = now => {
+      raf = 0;
+      if (!onScreen || document.hidden) return;
+      t += Math.min(now - last, 100); last = now;
+      rows.forEach(r => { const k = (t / r.dur) % 1; r.el.style.transform = `translate3d(${(-(r.rev ? 1 - k : k) * r.period).toFixed(2)}px,0,0)`; });
+      raf = requestAnimationFrame(tick);
+    };
+    const start = () => { if (!raf && onScreen && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(tick); } };
+    if ("IntersectionObserver" in window) {
+      const near = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { loadCards(); near.disconnect(); } }, { rootMargin: "250% 0px" });
+      near.observe(postcards);
+      if (!reduce) {
+        document.documentElement.classList.add("lanes-js");
+        measure();
+        rows.forEach(r => { r.el.style.transform = `translate3d(${r.rev ? -r.period : 0}px,0,0)`; });
+        new IntersectionObserver(es => { onScreen = es.some(e => e.isIntersecting); start(); }, { rootMargin: "120px 0px" }).observe(postcards);
+        document.addEventListener("visibilitychange", start);
+        addEventListener("resize", measure);
+      }
+    } else loadCards();
+  }
 
   // ---- Map: the app's own projection, so dots land exactly on the picture ----
   const svg = $("#journeys");
@@ -148,7 +182,7 @@
   }
 
   // ---- Scroll-driven pieces ----
-  const nav = $(".nav"), heroPhone = $("#heroPhone");
+  const nav = $(".nav"), heroPhone = $("#heroPhone"), heroBadge = $("#get");
   const storySteps = $$(".story-steps .step"), storyShots = $$(".story-phone .sv"), bar = $("#storyBar"), story = $(".story");
   const storyTints = $$(".story-phone .tint"), storyFloats = $$(".story-phone .floats");
   // ---- Clips in the frames: load when close, play only while on screen ----
@@ -171,18 +205,39 @@
   const duoWrap = duoSec ? $(".duo-wrap", duoSec) : null, phoneDuo = matchMedia("(max-width: 760px)");
   // Safari's toolbar changes innerHeight while scrolling; only a width change (rotation) updates this.
   let steadyVh = innerHeight, steadyW = innerWidth;
-  addEventListener("resize", () => { if (innerWidth !== steadyW) { steadyW = innerWidth; steadyVh = innerHeight; } });
+  addEventListener("resize", () => { if (innerWidth !== steadyW) { steadyW = innerWidth; steadyVh = innerHeight; measureHero(); } });
   // Where the browser can tie an animation to scrolling itself (Safari 26, Chrome), it moves
   // the Duo and the Year wrap card in step with the finger; doing it here lags a frame behind
   // on iPhone and shakes. Older browsers get the same motion from this script.
   const nativeScroll = !!(window.CSS && CSS.supports && CSS.supports("animation-timeline: view()"));
   if (nativeScroll) document.documentElement.classList.add("scroll-native");
-  const wrapSec = $(".wrapsec"), tilt = $("#tilt"), finalBg = $("#finalBg"), finalSec = $(".final");
+  const wrapSec = $(".wrapsec"), tilt = $("#tilt"), finalBg = $("#finalBg");
+  // ---- Screens that scroll with the page ----
+  // Each .reel-img is one tall capture of the app. It moves up inside its frame, under the app's
+  // own pinned header and tab bar, by --reel-to (a share of its own height) from first to last.
+  const storyPhone = $(".story-phone");
+  const reels = $$(".reel-img").map(el => {
+    const sv = el.closest(".story-phone .sv");
+    return { el, to: parseFloat(getComputedStyle(el).getPropertyValue("--reel-to")) || 0, hero: !!el.closest(".hero-phone"), stage: el.closest(".mstage"), step: sv ? Number(sv.dataset.step) : -1 };
+  });
+  // The hero's list runs from the top of the page until its phone has left the screen.
+  let heroEnd = 1200;
+  const measureHero = () => {
+    if (!heroPhone) return;
+    let top = 0;
+    for (let n = heroPhone; n; n = n.offsetParent) top += n.offsetTop;
+    heroEnd = Math.max(600, top + heroPhone.offsetHeight);
+    document.documentElement.style.setProperty("--hero-end", `${Math.round(heroEnd)}px`);
+  };
+  measureHero();
+  addEventListener("load", measureHero);
   let current = -1;
 
   const frame = () => {
     const y = scrollY, vh = innerHeight;
     nav && nav.classList.toggle("solid", y > 40);
+    // A page with no badge of its own (privacy, support, credits) shows the pill from the start.
+    nav && nav.classList.toggle("past", heroBadge ? heroBadge.getBoundingClientRect().bottom < 64 : true);
     if (!reduce) {
       showVisible();
 
@@ -205,16 +260,35 @@
         if (bar && story) { const r = story.getBoundingClientRect(); bar.style.height = `${clamp((vh / 2 - r.top) / r.height) * 100}%`; }
       }
 
+      // Screens: the pinned story phone is always moved from here. The hero and the panels on
+      // phones only where the browser can't tie them to scrolling itself.
+      if (reels.length) {
+        const wide = storyPhone && storyPhone.offsetParent !== null;
+        reels.forEach(r => {
+          let p = -1;
+          if (r.step >= 0) {
+            const s = wide && storySteps[r.step];
+            if (s) { const b = s.getBoundingClientRect(), lead = r.step ? .5 : .8; p = clamp((vh / 2 + lead * b.height - (b.top + b.height / 2)) / ((lead + .5) * b.height)); }
+          } else if (!nativeScroll) {
+            if (r.hero) p = clamp(y / heroEnd);
+            else if (r.stage && r.stage.offsetParent !== null) { const b = r.stage.getBoundingClientRect(); p = clamp(((vh - b.top) / (vh + b.height) - .12) / .76); }
+          }
+          if (p >= 0) r.el.style.transform = `translate3d(0,${(r.to * p).toFixed(3)}%,0)`;
+        });
+      }
+
       // Duo: fold angle follows scroll through the section.
       if (duoSec && duoLeft) {
         let p;
         if (phoneDuo.matches) {
-          // Phones: the Duo isn't pinned; it opens as it rises from the bottom to the middle.
+          // Phones: the Duo isn't pinned; it starts to open once half of it is on screen and is
+          // flat a little above the middle (the same range as phone.css).
           const w = duoWrap.getBoundingClientRect();
-          p = clamp((steadyVh - w.bottom) / Math.max(1, (steadyVh - w.height) * 0.45));
+          p = clamp((steadyVh + w.height * 0.5 - w.bottom) / Math.max(1, w.height * 0.5 + (steadyVh - w.height) * 0.55));
         } else {
-          // The stage's own height (100svh) doesn't change when Safari's toolbar shows or hides.
-          const r = duoSec.getBoundingClientRect(), span = r.height - (duoStage ? duoStage.offsetHeight : vh);
+          // The section is 2.6 screens tall and the Duo opens while it crosses the screen. Taking the
+          // screen's height from the section's own keeps this steady when Safari's toolbar shows or hides.
+          const r = duoSec.getBoundingClientRect(), span = r.height * (1 - 1 / 2.6);
           p = clamp(-r.top / (span * 0.75));
         }
         const e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
@@ -238,8 +312,12 @@
         if (r.top < vh * 0.7) wrapSec.classList.add("in");
       }
 
-      // Final photo drifts slower than the page.
-      if (finalBg && finalSec) { const r = finalSec.getBoundingClientRect(); finalBg.style.transform = `translateY(${(r.top) * -0.12}px)`; }
+      // The closing picture drifts a little slower than its card: nothing when the card is in the
+      // middle of the screen, and never more than the 40px the picture has to spare.
+      if (finalBg) {
+        const r = finalBg.parentElement.getBoundingClientRect();
+        finalBg.style.transform = `translate3d(0, ${Math.max(-38, Math.min(38, (r.top + r.height / 2 - steadyVh / 2) * -0.06)).toFixed(1)}px, 0)`;
+      }
     }
   };
   let ticking = false;

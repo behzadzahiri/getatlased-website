@@ -47,12 +47,12 @@
     }
   }
 
-  // ---- Share: photos are picked one by one as you scroll, and the share button grows louder ----
+  // ---- Share: photos are picked one by one as you scroll, and the picker's share icon grows louder ----
   // Scrolling back up unpicks them in turn, so it plays again.
   const shareArt = $(".share-art");
   if (shareArt && !reduce) {
     const picks = $$(".ph", shareArt).filter(ph => ph.classList.contains("on"));
-    const pics = $(".pics", shareArt), count = $(".pics .bar b", shareArt);
+    const pics = $(".pics", shareArt), count = $(".pics .bar b", shareArt), shareIcon = $(".pics .act", shareArt);
     const say = n => n === 0 ? "Select photos" : n === 1 ? "1 photo selected" : n + " photos selected";
     if (picks.length && pics && count) {
       let shareQueued = false, shownPicks = -1;
@@ -66,6 +66,11 @@
         picks.forEach((ph, i) => ph.classList.toggle("on", i < n));
         count.textContent = say(n);
         pics.classList.toggle("has", n > 0);
+        pics.style.setProperty("--n", n);
+        // Each new pick nudges the share icon, so it feels the photos arrive.
+        if (shareIcon && shownPicks >= 0 && n > shownPicks) {
+          shareIcon.classList.remove("bump"); void shareIcon.offsetWidth; shareIcon.classList.add("bump");
+        }
         shareArt.classList.toggle("done", n === picks.length);
         shownPicks = n;
       };

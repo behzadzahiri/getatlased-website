@@ -22,21 +22,23 @@
   if (reduce) reveals.forEach(el => el.classList.add("in"));
   else setTimeout(() => reveals.forEach(el => el.classList.add("in")), 6000);
 
-  // ---- Photos drop into the phone and the padlock shuts, at the pace of the scroll ----
-  // --p runs from 0, as the phone rises into view, to 1 when it reaches the middle of the screen;
-  // there the lock bites once and stays shut.
+  // ---- Photos slip into the phone at the pace of the scroll, then the padlock slams shut ----
+  // --p runs from 0, as the phone rises into view, to 1 once it stands clear in the lower half of
+  // the screen. The photos follow --p. At 1 the lock plays, on its own clock so it is always seen
+  // whole; scrolling back up opens it again, so it plays each time the phone comes back.
   const lockArt = $(".lockart");
   if (lockArt) {
-    const shut = () => { lockArt.style.setProperty("--p", "1"); lockArt.classList.add("shut"); };
-    if (reduce) shut();
+    if (reduce) { lockArt.style.setProperty("--p", "1"); lockArt.classList.add("shut"); }
     else {
-      let queued = false;
+      let queued = false, locked = false;
       const step = () => {
         queued = false;
         const r = lockArt.getBoundingClientRect(), vh = innerHeight;
-        const p = Math.min(1, Math.max(0, (vh * 0.92 - (r.top + r.height / 2)) / (vh * 0.44)));
-        if (p >= 1) { shut(); removeEventListener("scroll", on); removeEventListener("resize", on); }
-        else lockArt.style.setProperty("--p", p.toFixed(3));
+        const p = Math.min(1, Math.max(0, (vh * 0.96 - (r.top + r.height / 2)) / (vh * 0.34)));
+        if (!locked && p >= 1) { locked = true; lockArt.classList.add("shut"); }
+        else if (locked && p <= 0.55) { locked = false; lockArt.classList.remove("shut"); }
+        // While it is locked the photos stay inside, however the page is nudged.
+        lockArt.style.setProperty("--p", locked ? "1" : p.toFixed(3));
       };
       const on = () => { if (!queued) { queued = true; requestAnimationFrame(step); } };
       addEventListener("scroll", on, { passive: true });

@@ -22,6 +22,13 @@
   if (reduce) reveals.forEach(el => el.classList.add("in"));
   else setTimeout(() => reveals.forEach(el => el.classList.add("in")), 6000);
 
+  // ---- The padlock closes once, when it comes into view ----
+  const lockArt = $(".lockart");
+  if (lockArt) {
+    if (reduce || !("IntersectionObserver" in window)) lockArt.classList.add("shut");
+    else new IntersectionObserver((es, o) => { if (es.some(e => e.isIntersecting)) { lockArt.classList.add("shut"); o.disconnect(); } }, { threshold: 0.8 }).observe(lockArt);
+  }
+
   // ---- Hero slideshow ----
   const slides = $$(".slide"), chip = $("#placeChip");
   if (slides.length) {

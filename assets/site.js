@@ -22,11 +22,27 @@
   if (reduce) reveals.forEach(el => el.classList.add("in"));
   else setTimeout(() => reveals.forEach(el => el.classList.add("in")), 6000);
 
-  // ---- The padlock closes once, when it comes into view ----
+  // ---- Photos drop into the phone and the padlock shuts, at the pace of the scroll ----
+  // --p runs from 0, as the phone rises into view, to 1 when it reaches the middle of the screen;
+  // there the lock bites once and stays shut.
   const lockArt = $(".lockart");
   if (lockArt) {
-    if (reduce || !("IntersectionObserver" in window)) lockArt.classList.add("shut");
-    else new IntersectionObserver((es, o) => { if (es.some(e => e.isIntersecting)) { lockArt.classList.add("shut"); o.disconnect(); } }, { threshold: 0.8 }).observe(lockArt);
+    const shut = () => { lockArt.style.setProperty("--p", "1"); lockArt.classList.add("shut"); };
+    if (reduce) shut();
+    else {
+      let queued = false;
+      const step = () => {
+        queued = false;
+        const r = lockArt.getBoundingClientRect(), vh = innerHeight;
+        const p = Math.min(1, Math.max(0, (vh * 0.92 - (r.top + r.height / 2)) / (vh * 0.44)));
+        if (p >= 1) { shut(); removeEventListener("scroll", on); removeEventListener("resize", on); }
+        else lockArt.style.setProperty("--p", p.toFixed(3));
+      };
+      const on = () => { if (!queued) { queued = true; requestAnimationFrame(step); } };
+      addEventListener("scroll", on, { passive: true });
+      addEventListener("resize", on);
+      step();
+    }
   }
 
   // ---- Hero slideshow ----

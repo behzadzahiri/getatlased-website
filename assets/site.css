@@ -135,6 +135,14 @@ h1 .serif { font-size: 1.1em; letter-spacing: -0.02em; text-shadow: none; }
 .light .muted { color: var(--ink-soft); }
 .intro { padding: 380px 0 40px; text-align: center; }
 @media (max-width: 760px) { .intro { padding-top: 270px; } }
+/* A quiet reassurance under the first promise, where photo access is first mentioned. */
+.assure { display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 29em; margin: 40px auto 0; font-size: 17px; line-height: 1.5; color: var(--ink-soft); }
+.assure .lock { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
+.assure .lock svg { width: 22px; height: 22px; }
+.assure b { color: var(--ink); font-weight: 600; }
+.assure a { color: #0E8A6E; font-weight: 600; }
+.assure a:hover { text-decoration: underline; }
+@media (max-width: 760px) { .assure { margin-top: 32px; font-size: 16px; } }
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
 .eyebrow::before { content: ""; width: 26px; height: 2px; border-radius: 2px; background: currentColor; }
 h2 { font-size: clamp(38px, 5.6vw, 76px); line-height: 1; letter-spacing: -0.045em; margin: 16px 0 0; font-weight: 700; }

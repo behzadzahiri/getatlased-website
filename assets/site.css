@@ -143,10 +143,11 @@ h1 .serif { font-size: 1.1em; letter-spacing: -0.02em; text-shadow: none; }
 .lockart .halo { position: absolute; inset: 12% -90px; border-radius: 50%; z-index: -1; background: radial-gradient(closest-side, rgba(19,163,131,.15), rgba(19,163,131,0)); }
 .lockart .shackle { transition: transform .8s cubic-bezier(.34,1.5,.5,1) .3s; }
 .js .lockart:not(.shut) .shackle { transform: translateY(-9px); }
+.assure .eyebrow { margin-bottom: -14px; }
 .assure b { color: var(--ink); font-weight: 600; }
 .assure a { color: #0E8A6E; font-weight: 600; }
 .assure a:hover { text-decoration: underline; }
-@media (max-width: 760px) { .assure { margin-top: 36px; gap: 26px; font-size: 16px; } .lockart { width: 120px; } .lockart .halo { inset: 12% -60px; } }
+@media (max-width: 760px) { .assure { margin-top: 36px; gap: 26px; font-size: 16px; } .assure .eyebrow { margin-bottom: -10px; font-size: 12px; } .lockart { width: 120px; } .lockart .halo { inset: 12% -60px; } }
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
 .eyebrow::before { content: ""; width: 26px; height: 2px; border-radius: 2px; background: currentColor; }
 h2 { font-size: clamp(38px, 5.6vw, 76px); line-height: 1; letter-spacing: -0.045em; margin: 16px 0 0; font-weight: 700; }

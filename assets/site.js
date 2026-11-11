@@ -47,6 +47,35 @@
     }
   }
 
+  // ---- Share: photos are picked one by one as you scroll, and the share button grows louder ----
+  // Scrolling back up unpicks them in turn, so it plays again.
+  const shareArt = $(".share-art");
+  if (shareArt && !reduce) {
+    const picks = $$(".ph", shareArt).filter(ph => ph.classList.contains("on"));
+    const pics = $(".pics", shareArt), count = $(".pics .bar b", shareArt);
+    const say = n => n === 0 ? "Select photos" : n === 1 ? "1 photo selected" : n + " photos selected";
+    if (picks.length && pics && count) {
+      let shareQueued = false, shownPicks = -1;
+      const shareStep = () => {
+        shareQueued = false;
+        const r = shareArt.getBoundingClientRect(), vh = innerHeight;
+        const p = clamp((vh * 0.95 - (r.top + r.height / 2)) / (vh * 0.45));
+        shareArt.style.setProperty("--p", p.toFixed(3));
+        const n = picks.filter((ph, i) => p >= 0.18 + i * 0.24).length;
+        if (n === shownPicks) return;
+        picks.forEach((ph, i) => ph.classList.toggle("on", i < n));
+        count.textContent = say(n);
+        pics.classList.toggle("has", n > 0);
+        shareArt.classList.toggle("done", n === picks.length);
+        shownPicks = n;
+      };
+      const shareOn = () => { if (!shareQueued) { shareQueued = true; requestAnimationFrame(shareStep); } };
+      addEventListener("scroll", shareOn, { passive: true });
+      addEventListener("resize", shareOn);
+      shareStep();
+    }
+  }
+
   // ---- Hero slideshow ----
   const slides = $$(".slide"), chip = $("#placeChip");
   if (slides.length) {

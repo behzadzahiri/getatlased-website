@@ -393,6 +393,28 @@ h2 .serif { font-size: 1.1em; }
 .sharebtn { position: absolute; left: 28%; bottom: 1%; display: flex; align-items: center; gap: 1.8cqw; padding: 2.6cqw 4.6cqw; border-radius: 999px;
   font-size: 3cqw; font-weight: 700; color: #1A0E05; background: linear-gradient(92deg, var(--orange), var(--sun)); box-shadow: 0 22px 40px -18px rgba(14,27,46,.45); }
 .sharebtn svg { width: 3.4cqw; height: 3.4cqw; }
+/* As you scroll, the photos are picked one by one and the share button grows louder.
+   --p (0 to 1) comes from site.js; without scripts the picture rests finished. */
+.share-art { --p: 1; }
+.js .share-art { --p: 0; }
+.ph i { transition: background .25s ease, box-shadow .25s ease; }
+.ph i svg { transform: scale(0); transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+.ph.on i svg { transform: scale(1); }
+.js .ph.on img { animation: phTap .45s cubic-bezier(.3,.7,.3,1); }
+.pics .act { transition: background .3s ease, color .3s ease; }
+.pics.has .act:first-of-type { background: var(--sky); color: #fff; }
+.sharebtn { scale: calc(.9 + .16 * var(--p)); transition: scale .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease;
+  box-shadow: 0 22px 40px -18px rgba(14,27,46,.45), 0 0 calc(34px * var(--p)) rgba(255,106,42, calc(.5 * var(--p))); }
+.sharebtn::after { content: ""; position: absolute; inset: 0; border-radius: inherit; opacity: 0; pointer-events: none; }
+.share-art.done .sharebtn { animation: sharePop .6s cubic-bezier(.3,.7,.3,1) .05s both; }
+.share-art.done .sharebtn::after { animation: shareRing 1.15s cubic-bezier(.2,.7,.2,1) .12s both; }
+@keyframes phTap { 0% { transform: none; } 40% { transform: scale(.92); } 100% { transform: none; } }
+@keyframes sharePop { 0% { transform: none; } 35% { transform: scale(1.12) rotate(-2deg); } 70% { transform: scale(.97); } 100% { transform: none; } }
+@keyframes shareRing { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,106,42,.55); } 100% { opacity: 0; box-shadow: 0 0 0 5cqw rgba(255,106,42,0); } }
+@media (prefers-reduced-motion: reduce) {
+  .ph i svg, .sharebtn, .pics .act { transition: none; }
+  .js .ph.on img, .share-art.done .sharebtn, .share-art.done .sharebtn::after { animation: none; }
+}
 @media (max-width: 900px) {
   .share-grid { grid-template-columns: 1fr; gap: 56px; }
   .sharesec .copy { order: -1; text-align: center; }

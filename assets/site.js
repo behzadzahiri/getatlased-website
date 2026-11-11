@@ -47,6 +47,30 @@
     }
   }
 
+  // ---- Year wrap: the flags around the card pop in one by one as each reaches the screen ----
+  // Scrolling back up tucks them away again, so they replay.
+  const wrapFlags = $$(".wrapsec .flagfly");
+  if (wrapFlags.length) {
+    if (reduce) wrapFlags.forEach(f => f.classList.add("show"));
+    else {
+      let flagsQueued = false;
+      const flagsStep = () => {
+        flagsQueued = false;
+        const vh = innerHeight; let k = 0;
+        wrapFlags.forEach(f => {
+          const r = f.getBoundingClientRect(), mid = r.top + r.height / 2, shown = f.classList.contains("show");
+          // Several at once (a fast fling) still arrive in turn.
+          if (!shown && mid < vh * 0.86) { f.style.transitionDelay = (k++ * 0.16) + "s"; f.classList.add("show"); }
+          else if (shown && mid > vh * 0.96) { f.style.transitionDelay = "0s"; f.classList.remove("show"); }
+        });
+      };
+      const flagsOn = () => { if (!flagsQueued) { flagsQueued = true; requestAnimationFrame(flagsStep); } };
+      addEventListener("scroll", flagsOn, { passive: true });
+      addEventListener("resize", flagsOn);
+      flagsStep();
+    }
+  }
+
   // ---- Share: photos are picked one by one as you scroll, and the picker's share icon grows louder ----
   // Scrolling back up unpicks them in turn, so it plays again.
   const shareArt = $(".share-art");

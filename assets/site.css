@@ -342,8 +342,12 @@ h2 .serif { font-size: 1.1em; }
 .wrap-card { position: relative; width: min(360px, 76vw); margin: 0 auto; perspective: 1200px; }
 .wrap-card .tilt { transform-style: preserve-3d; will-change: transform; }
 .wrap-card img.wrapimg { width: 100%; border-radius: 28px; box-shadow: 0 60px 100px -40px rgba(0,0,0,.9); }
-.flagfly { position: absolute; width: 46px; height: 46px; border-radius: 50%; box-shadow: 0 12px 26px rgba(0,0,0,.45); opacity: 0; transform: scale(.2); transition: opacity .6s var(--d, 0s), transform .9s cubic-bezier(.2,1.5,.4,1) var(--d, 0s); }
-.wrapsec.in .flagfly { opacity: 1; transform: scale(1); }
+.flagfly { position: absolute; width: 46px; height: 46px; border-radius: 50%; box-shadow: 0 12px 26px rgba(0,0,0,.45); }
+/* Each flag pops in on its own as it reaches the screen, and tucks away again when scrolled back below
+   (site.js); without scripts they simply show. */
+.flagfly { opacity: 1; transform: none; }
+.js .flagfly { opacity: 0; transform: scale(.2) rotate(-28deg); transition: opacity .45s ease, transform .85s cubic-bezier(.2,1.55,.4,1); }
+.js .flagfly.show { opacity: 1; transform: none; }
 .wrapsec .list { list-style: none; padding: 0; margin: 30px 0 0; display: grid; gap: 14px; }
 .wrapsec .list li { display: flex; gap: 14px; align-items: center; font-size: 18px; color: var(--mist); }
 .wrapsec .list li b { color: #fff; font-weight: 600; }

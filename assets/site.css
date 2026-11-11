@@ -137,31 +137,17 @@ h1 .serif { font-size: 1.1em; letter-spacing: -0.02em; text-shadow: none; }
 @media (max-width: 760px) { .intro { padding-top: 270px; } }
 /* A quiet reassurance under the first promise, where photo access is first mentioned. */
 .assure { display: flex; flex-direction: column; align-items: center; gap: 30px; max-width: 29em; margin: 48px auto 0; font-size: 17px; line-height: 1.5; color: var(--ink-soft); }
-.assure-art { display: grid; place-items: center; }
-.assure-copy { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.assure-line { margin: 0; }
-.assure-list { display: none; }
 /* The picture says it: the lock is inside the phone. The shackle closes once as it scrolls into view. */
 .lockart { position: relative; display: block; width: 144px; filter: drop-shadow(0 18px 22px rgba(14,27,46,.16)); }
 .lockart svg { display: block; width: 100%; height: auto; }
 .lockart .halo { position: absolute; inset: 12% -90px; border-radius: 50%; z-index: -1; background: radial-gradient(closest-side, rgba(19,163,131,.15), rgba(19,163,131,0)); }
 .lockart .shackle { transition: transform .8s cubic-bezier(.34,1.5,.5,1) .3s; }
 .js .lockart:not(.shut) .shackle { transform: translateY(-9px); }
+.assure .eyebrow { margin-bottom: -14px; }
 .assure b { color: var(--ink); font-weight: 600; }
 .assure a { color: #0E8A6E; font-weight: 600; }
 .assure a:hover { text-decoration: underline; }
-@media (max-width: 760px) { .assure { margin-top: 36px; gap: 26px; font-size: 16px; } .assure-copy { gap: 14px; } .assure .eyebrow { font-size: 12px; } .lockart { width: 120px; } .lockart .halo { inset: 12% -60px; } }
-/* Wide screens: the same words and picture held in a raised card, like the rest of the page. */
-@media (min-width: 901px) {
-  .assure { display: grid; grid-template-columns: 5fr 7fr; align-items: stretch; gap: 0; width: min(1000px, 100%); max-width: none; margin-top: 64px; overflow: hidden; text-align: left; background: #fff; border-radius: 36px; box-shadow: 0 34px 60px -40px rgba(14,27,46,.32); }
-  .assure .lockart { width: 168px; }
-  .assure-art { padding: 56px 0; background: linear-gradient(160deg, #D9F0E8, #EEF8F4); }
-  .assure-copy { align-items: flex-start; gap: 0; padding: 56px 64px 56px 56px; }
-  .assure-copy .eyebrow { margin-bottom: 18px; }
-  .assure-line { font-size: 18px; }
-  .assure-line b { display: block; font-size: 36px; line-height: 1.08; letter-spacing: -0.035em; margin-bottom: 16px; }
-  .assure-list { display: grid; margin-top: 28px; }
-}
+@media (max-width: 760px) { .assure { margin-top: 36px; gap: 26px; font-size: 16px; } .assure .eyebrow { margin-bottom: -10px; font-size: 12px; } .lockart { width: 120px; } .lockart .halo { inset: 12% -60px; } }
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
 .eyebrow::before { content: ""; width: 26px; height: 2px; border-radius: 2px; background: currentColor; }
 h2 { font-size: clamp(38px, 5.6vw, 76px); line-height: 1; letter-spacing: -0.045em; margin: 16px 0 0; font-weight: 700; }

@@ -346,7 +346,7 @@ h2 .serif { font-size: 1.1em; }
 /* Each flag pops in on its own as it reaches the screen, and tucks away again when scrolled back below
    (site.js); without scripts they simply show. */
 .flagfly { opacity: 1; transform: none; }
-.js .flagfly { opacity: 0; transform: scale(.2) rotate(-28deg); transition: opacity .45s ease, transform .85s cubic-bezier(.2,1.55,.4,1); }
+.js .flagfly { opacity: 0; transform: scale(.2) rotate(-28deg); transition: opacity .75s ease, transform 1.35s cubic-bezier(.2,1.55,.4,1); }
 .js .flagfly.show { opacity: 1; transform: none; }
 .wrapsec .list { list-style: none; padding: 0; margin: 30px 0 0; display: grid; gap: 14px; }
 .wrapsec .list li { display: flex; gap: 14px; align-items: center; font-size: 18px; color: var(--mist); }
@@ -403,19 +403,19 @@ h2 .serif { font-size: 1.1em; }
 .pics { --n: 3; }
 .js .pics { --n: 0; }
 .ph::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  box-shadow: inset 0 0 0 0 var(--sky); transition: box-shadow .25s ease; }
+  box-shadow: inset 0 0 0 0 var(--sky); transition: box-shadow .45s ease; }
 .ph.on::after { box-shadow: inset 0 0 0 .8cqw var(--sky); }
-.ph i { z-index: 1; transition: background .25s ease, box-shadow .25s ease; }
-.ph i svg { transform: scale(0); transition: transform .45s cubic-bezier(.34,1.8,.64,1) .08s; }
+.ph i { z-index: 1; transition: background .45s ease, box-shadow .45s ease; }
+.ph i svg { transform: scale(0); transition: transform .7s cubic-bezier(.34,1.8,.64,1) .15s; }
 .ph.on i svg { transform: scale(1); }
-.js .ph.on { z-index: 1; animation: phJump .6s cubic-bezier(.3,.7,.3,1); }
-.js .ph.on i { animation: chkPop .5s cubic-bezier(.3,.7,.3,1) .06s; }
-.pics .act { position: relative; transition: background .3s ease, color .3s ease, transform .45s cubic-bezier(.34,1.56,.64,1), box-shadow .45s ease; }
+.js .ph.on { z-index: 1; animation: phJump 1s cubic-bezier(.3,.7,.3,1); }
+.js .ph.on i { animation: chkPop .8s cubic-bezier(.3,.7,.3,1) .12s; }
+.pics .act { position: relative; transition: background .5s ease, color .5s ease, transform .75s cubic-bezier(.34,1.56,.64,1), box-shadow .75s ease; }
 .pics .act:first-of-type { transform: scale(calc(1 + .12 * var(--n))); box-shadow: 0 0 0 calc(.7cqw * var(--n)) rgba(62,142,247,.14); }
 .pics.has .act:first-of-type { background: var(--sky); color: #fff; }
-.pics .act.bump { animation: actBump .45s cubic-bezier(.3,.7,.3,1); }
+.pics .act.bump { animation: actBump .75s cubic-bezier(.3,.7,.3,1) .1s; }
 .pics .act:first-of-type::after { content: ""; position: absolute; inset: 0; border-radius: 50%; opacity: 0; pointer-events: none; }
-.share-art.done .pics .act:first-of-type::after { animation: actRing 1.1s cubic-bezier(.2,.7,.2,1) .15s both; }
+.share-art.done .pics .act:first-of-type::after { animation: actRing 1.7s cubic-bezier(.2,.7,.2,1) .3s both; }
 @keyframes phJump { 0% { transform: none; } 32% { transform: translateY(-10%) scale(1.14); } 62% { transform: translateY(2%) scale(.95); } 100% { transform: none; } }
 @keyframes chkPop { 0% { scale: .4; } 45% { scale: 1.45; } 100% { scale: 1; } }
 @keyframes actBump { 0% { translate: 0; } 35% { translate: 0 -22%; } 70% { translate: 0 4%; } 100% { translate: 0; } }

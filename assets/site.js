@@ -60,7 +60,7 @@
         wrapFlags.forEach(f => {
           const r = f.getBoundingClientRect(), mid = r.top + r.height / 2, shown = f.classList.contains("show");
           // Several at once (a fast fling) still arrive in turn.
-          if (!shown && mid < vh * 0.86) { f.style.transitionDelay = (k++ * 0.16) + "s"; f.classList.add("show"); }
+          if (!shown && mid < vh * 0.86) { f.style.transitionDelay = (k++ * 0.32) + "s"; f.classList.add("show"); }
           else if (shown && mid > vh * 0.96) { f.style.transitionDelay = "0s"; f.classList.remove("show"); }
         });
       };
@@ -83,7 +83,7 @@
       const shareStep = () => {
         shareQueued = false;
         const r = shareArt.getBoundingClientRect(), vh = innerHeight;
-        const p = clamp((vh * 0.95 - (r.top + r.height / 2)) / (vh * 0.45));
+        const p = clamp((vh * 0.98 - (r.top + r.height / 2)) / (vh * 0.62));
         shareArt.style.setProperty("--p", p.toFixed(3));
         const n = picks.filter((ph, i) => p >= 0.18 + i * 0.24).length;
         if (n === shownPicks) return;

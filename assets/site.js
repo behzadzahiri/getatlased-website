@@ -229,11 +229,34 @@
     }), { rootMargin: "300px 0px" });
     $$("video.vid").forEach(v => { if (v.classList.contains("sv")) v.dataset.active = v.classList.contains("on") ? "1" : "0"; seen.observe(v); });
   }
-  // Phones show every step at once, so each step's panel gets a copy of its cards.
+  // Phones show every step at once, so each step's panel gets a copy of its cards. The cards come in
+  // one by one as each reaches the screen, and go again when scrolled back below, ready to replay.
+  const mCards = [];
   $$(".mstage").forEach(m => {
     const f = $(`.story-phone .floats[data-step="${m.dataset.step}"]`);
-    if (f) { const copy = f.cloneNode(true); copy.classList.add("on"); m.appendChild(copy); }
+    if (f) { const copy = f.cloneNode(true); m.appendChild(copy); mCards.push(...$$(".fc", copy)); }
   });
+  if (mCards.length) {
+    if (reduce) mCards.forEach(c => c.classList.add("show"));
+    else {
+      let cardsQueued = false;
+      const cardsStep = () => {
+        cardsQueued = false;
+        const vh = innerHeight; let k = 0;
+        mCards.forEach(c => {
+          const r = c.getBoundingClientRect(), mid = r.top + r.height / 2, shown = c.classList.contains("show");
+          if (!r.height) return;
+          // Several at once (a fast fling) still arrive in turn.
+          if (!shown && mid < vh * 0.84) { c.style.transitionDelay = (k++ * 0.2) + "s"; c.classList.add("show"); }
+          else if (shown && mid > vh * 0.95) { c.style.transitionDelay = "0s"; c.classList.remove("show"); }
+        });
+      };
+      const cardsOn = () => { if (!cardsQueued) { cardsQueued = true; requestAnimationFrame(cardsStep); } };
+      addEventListener("scroll", cardsOn, { passive: true });
+      addEventListener("resize", cardsOn);
+      cardsStep();
+    }
+  }
   const duoSec = $("#duo"), duoLeft = $("#duoLeft"), duoBody = $("#duoBody"), duoHinge = $("#duoHinge"), duoLabel = $("#duoLabel");
   const duoStage = duoSec ? $(".stage", duoSec) : null;
   const duoWrap = duoSec ? $(".duo-wrap", duoSec) : null, phoneDuo = matchMedia("(max-width: 760px)");

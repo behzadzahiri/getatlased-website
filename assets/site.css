@@ -235,16 +235,20 @@ h2 .serif { font-size: 1.1em; }
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 100%); mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 100%); }
 .story-phone .stage .iphone { position: relative; z-index: 1; height: 86%; width: auto; margin: 0; }
 .floats { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-.fc { position: absolute; opacity: 0; transform: translateY(18px) scale(.94); transition: opacity .45s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
-.floats.on .fc { opacity: 1; transform: none; }
-.floats.on .fc:nth-child(2) { transition-delay: .12s; }
-.floats.on .fc:nth-child(3) { transition-delay: .24s; }
+/* Each card slides in from its own side with a little spring. On the big screen a step's cards follow
+   the phone one by one; on phones each comes in as it reaches the screen and leaves when scrolled back. */
+.fc { position: absolute; opacity: 0; transform: translate(var(--from, -36px), 14px) scale(.9);
+  transition: opacity .45s ease, transform .85s cubic-bezier(.34,1.56,.64,1); }
+.floats.on .fc, .fc.show { opacity: 1; transform: none; }
+.floats.on .fc:nth-child(1) { transition-delay: .15s; }
+.floats.on .fc:nth-child(2) { transition-delay: .45s; }
+.floats.on .fc:nth-child(3) { transition-delay: .75s; }
 .fc .in { background: #fff; color: var(--ink); border-radius: 20px; box-shadow: 0 2px 4px rgba(14,27,46,.06), 0 26px 46px -20px rgba(14,27,46,.5); animation: bob 7s ease-in-out infinite; }
 .fc:nth-child(2) .in { animation-duration: 8s; animation-delay: -2.5s; }
 .fc:nth-child(3) .in { animation-duration: 6.5s; animation-delay: -4s; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
 .f1 { left: -64px; top: 10%; }
-.f2 { right: -44px; top: 43%; }
+.f2 { right: -44px; top: 43%; --from: 36px; }
 .f3 { left: -40px; bottom: 10%; }
 @media (max-width: 1260px) { .f2 { right: -14px; } }
 .toast { display: flex; align-items: center; gap: 12px; padding: 12px 18px 12px 12px; }
@@ -287,7 +291,7 @@ h2 .serif { font-size: 1.1em; }
   .mstage .f2 { right: -10px; top: 46%; transform-origin: right center; }
   .mstage .f3 { left: -10px; bottom: 8%; transform-origin: left bottom; }
 }
-@media (prefers-reduced-motion: reduce) { .fc .in { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .fc .in { animation: none; } .fc { transition: none !important; } }
 
 /* Postcards marquee */
 .postcards { overflow: hidden; background: var(--paper-2); color: var(--ink); }

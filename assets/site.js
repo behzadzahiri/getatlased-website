@@ -1,3 +1,22 @@
+// A picture that fails to arrive (a weak connection, a lazy load the phone gave up on) is
+// fetched once more, then hidden, so a broken-image mark never shows.
+(() => {
+  const retry = img => {
+    if (img.dataset.retried) { img.style.visibility = "hidden"; return; }
+    img.dataset.retried = "1";
+    const src = (img.currentSrc || img.src).split("#")[0];
+    setTimeout(() => { img.loading = "eager"; img.src = src + (src.includes("?") ? "&" : "?") + "r=1"; }, 700);
+  };
+  document.addEventListener("error", e => { if (e.target instanceof HTMLImageElement) retry(e.target); }, true);
+  const sweep = () => document.querySelectorAll("img").forEach(img => {
+    // SVGs can report no natural size even when fine, so only the error event judges them.
+    const src = img.getAttribute("src") || "";
+    if (img.complete && src && !/\.svg(\?|$)/.test(src) && img.naturalWidth === 0) retry(img);
+  });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", sweep); else sweep();
+  window.addEventListener("load", sweep);
+})();
+
 // Atlased, getatlased.com. Small, dependency-free scroll animations.
 (() => {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

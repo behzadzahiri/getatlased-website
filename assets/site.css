@@ -115,9 +115,11 @@ h1 .serif { font-size: 1.1em; letter-spacing: -0.02em; text-shadow: none; }
   h1 { font-size: clamp(34px, 11.6vw, 54px); margin-top: 16px; }
   .lede { font-size: 17px; line-height: 1.5; max-width: 20.5em; margin-top: 18px; text-wrap: balance; }
   .lede-more { display: none; }
-  .hero .ctas { margin-top: 26px; }
-  .hero .insta { display: none; }
-  .hero-phone { margin-top: 42px; }
+  .hero .ctas { margin-top: 26px; flex-direction: column; gap: 4px; }
+  /* The follow link stays on phones as one small, quiet line under the badge. */
+  .hero .insta { font-size: 14px; font-weight: 500; padding: 9px 10px; gap: 7px; opacity: .8; }
+  .hero .insta svg { width: 17px; height: 17px; }
+  .hero-phone { margin-top: 30px; }
   /* The badge already says when; the pill in the bar appears once the badge has scrolled away. */
   .js .nav .btn { opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s, transform .2s; }
   .js .nav.past .btn { opacity: 1; visibility: visible; }

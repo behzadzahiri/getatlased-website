@@ -29,7 +29,7 @@
       <h1>Your journal stays on your iPhone.</h1>
       <p class="meta">Effective December 1, 2026 · Atlased is made by Behzad Zahiri · Contact <a href="mailto:getatlased@gmail.com">getatlased@gmail.com</a></p>
 
-      <p><strong>In short:</strong> Atlased has no account, no developer server, no advertising and no analytics. Your journal, and anything read from your photos or calendar, stays on your iPhone. Nothing is shared unless you choose to share it.</p>
+      <p><strong>In short:</strong> Atlased has no account, no developer server, no advertising and no analytics. Your journal stays on your iPhone. Photo images and calendar contents are never uploaded to a developer server. To find missing place names, Atlased sends Apple only photo coordinates outside your home areas. This is on by default, and you can turn it off in Build your journal → Photos. Sharing your journal is always your choice.</p>
 
       <h2>Your travel journal</h2>
       <p>Atlased is an iPhone travel journal. It stores the countries, cities, journeys, travel dates, notes, wishlist entries, flight records and cover photos you keep. You don't need an Atlased account. The app has no developer-operated backend, advertising, analytics SDK, friends service or app-managed cloud sync.</p>
@@ -39,19 +39,20 @@
 
       <h2>Photos (optional)</h2>
       <p>If you choose to find trips in your photos, iOS asks you to allow access to selected photos or your whole library. Atlased reads the saved locations, capture dates and on-device identifiers of the photos and videos you allow, to suggest places and journeys. Screenshots and items without a usable location are skipped. Atlased doesn't edit or upload your originals, and finding trips doesn't read the images themselves.</p>
-      <p>Countries and towns are matched on your iPhone using place data bundled with the app. <strong>If you choose “Look it up with Apple”, eligible coordinates are sent to Apple's place-name service</strong> to get place names. This needs a network connection. Photo pixels, filenames and notes are never sent. Results are kept on your iPhone; the lookup cache is protected and excluded from device backups.</p>
+      <p>Countries and towns are first matched on your iPhone using place data bundled with the app. <strong>To find missing place names, Atlased sends Apple only photo coordinates outside your home areas.</strong> You can turn “Look up places with Apple” off in Build your journal → Photos. The lookup needs a network connection. Results stay on your iPhone in a protected cache that is excluded from device backups.</p>
       <p>Journeys show bundled destination photos unless you pick a cover with Apple's photo picker. A chosen cover is resized and saved on your iPhone without the original photo's location data. Turning off Photos access doesn't delete covers or journeys you've already saved.</p>
+      <p>When Atlased displays or prepares a photo from your library, iOS can download it from your iCloud Photos library if needed. The download goes directly from iCloud to your iPhone.</p>
 
       <h2>Your home areas</h2>
       <p>Atlased can suggest where you live from your photos' dates and places, on your iPhone, so trips start and end correctly. A suggestion becomes a confirmed home only when you confirm it, and you can change or remove it at any time.</p>
-      <p>Confirmed home locations and your border choices are kept in a separate protected file that is excluded from device backups. They are never included in journal backups, shared pictures or reports. The Year wrap can draw your trips from your home town's public city centre (never your home itself), so someone who sees a shared Year wrap could tell roughly which city the lines start from. Photos at a confirmed home are never sent for place-name lookup.</p>
+      <p>Confirmed home locations and your border choices are kept in a separate protected file that is excluded from device backups. They are never included in journal backups, shared pictures or reports. The Year wrap can draw your trips from your home town's public city centre (never your home itself), so someone who sees a shared Year wrap could tell roughly which city the lines start from.</p>
 
       <h2>Calendar (optional)</h2>
       <p>If you choose to add flights and hotels from your calendar, iOS asks for calendar access. Atlased then reads the calendars and years you choose. Event titles, locations, notes and dates are processed on your iPhone to suggest journeys, stays and flights. Atlased never creates, edits or deletes events, and never sends calendar contents to a developer server.</p>
       <p>Calendars on your iPhone, including iCloud and Google calendars added in iPhone Settings, are supported; Atlased has no separate Google sign-in. Revoking access stops future reading but keeps the journeys and flights you've already saved.</p>
 
       <h2>Apple Maps and purchases</h2>
-      <p>Atlased uses Apple Maps for map imagery and labels. <strong>Map imagery comes over the network, and map requests can reveal the area you're viewing to Apple.</strong> Apple also provides the optional place-name lookup above. These services are covered by Apple's own privacy information: <a href="https://www.apple.com/legal/privacy/data/en/apple-maps/" rel="noopener">Apple Maps &amp; Privacy</a> and <a href="https://www.apple.com/legal/privacy/data/en/location-services/" rel="noopener">Location Services &amp; Privacy</a>. Atlased doesn't ask for your live location or track where you are.</p>
+      <p>Atlased uses Apple Maps for map imagery and labels. <strong>Map imagery comes over the network, and map requests can reveal the area you're viewing to Apple.</strong> Apple also provides the place-name lookup above, which you can turn off under Photos. These services are covered by Apple's own privacy information: <a href="https://www.apple.com/legal/privacy/data/en/apple-maps/" rel="noopener">Apple Maps &amp; Privacy</a> and <a href="https://www.apple.com/legal/privacy/data/en/location-services/" rel="noopener">Location Services &amp; Privacy</a>. Atlased doesn't ask for your live location or track where you are.</p>
       <p>If you choose Atlased Pro, Apple handles the purchase: a yearly subscription or a one-time lifetime unlock. The purchase belongs to your Apple Account. Atlased checks your purchase on your iPhone through StoreKit, never sends receipts to a server, and never sees your payment details. You manage or cancel a subscription in your Apple Account settings.</p>
 
       <h2>Trip anniversaries</h2>
@@ -64,6 +65,7 @@
         <li>Shared photos are temporary copies with their location removed (videos are shared as they are); the copies are deleted afterwards.</li>
         <li>“Make an album in Photos” adds the chosen photos to an album named after the journey. It's the only time Atlased changes your library, and it needs full Photos access.</li>
         <li>Year wraps leave out notes, journey titles and individual travel dates.</li>
+        <li>Travel PDFs can include route maps, journey dates, visited places, completed flights and the photos you choose. Private notes and original calendar and photo identifiers stay out. You can preview the PDF before sharing.</li>
         <li>JSON backups are more detailed than shared pictures and can include notes, coordinates and calendar details. Keep them private. Home locations are never included.</li>
       </ul>
 

@@ -324,14 +324,11 @@ h2 .serif { font-size: 1.1em; }
 .map-card .map { position: relative; aspect-ratio: 1000 / 480; }
 .map-card .map > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .map-card svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.route { fill: none; stroke: #FF9A4D; stroke-width: 1.5; stroke-linecap: round; opacity: .95; }
-.home-route { stroke: #FF7A3D; stroke-width: .9; opacity: .55; }
-.home-route.back { stroke: #FFB45E; opacity: .32; }
-.home-dot { fill: #fff; stroke: var(--orange); stroke-width: 2.4; }
-.home-pulse { fill: none; stroke: var(--sun); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; animation: pulse 2.4s ease-out infinite; }
+/* As in the app's Recap map: one orange for every route, and red places with a dark rim. The script sets the widths. */
+#journeys .route { fill: none; stroke: #EE7A2E; stroke-linecap: round; opacity: .9; }
+#journeys .city { fill: #F04448; stroke: #8E2A1F; transform-box: fill-box; transform-origin: center; }
+#journeys .home-pulse { fill: none; stroke: #FFBF6E; transform-box: fill-box; transform-origin: center; animation: pulse 2.4s ease-out infinite; }
 @keyframes pulse { from { transform: scale(1); opacity: .9; } to { transform: scale(3.4); opacity: 0; } }
-.comet { fill: #FFE2B0; filter: drop-shadow(0 0 3px rgba(255,190,110,.9)); }
-.city { fill: var(--coral); stroke: #FFD6CC; stroke-width: .8; transform-box: fill-box; transform-origin: center; }
 .stats { display: flex; justify-content: center; gap: clamp(36px, 7vw, 110px); margin-top: 46px; }
 .stat { text-align: center; }
 .stat b { display: block; font-size: clamp(30px, 3.6vw, 46px); color: #fff; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }

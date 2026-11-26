@@ -216,44 +216,174 @@
       [[30.04, 31.24], [30.33, 35.44]]
     ];
     const NS = "http://www.w3.org/2000/svg";
+    const W = 1000, HEIGHT = 480, EQUATOR = point(0, 0)[1];
     const H = point(...home);
-    const arc = ([x1, y1], [x2, y2], out) => {
-      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
-      const lift = Math.min(len * (out ? 0.32 : 0.25), out ? 110 : 40);
-      const cx = (x1 + x2) / 2, cy = (y1 + y2) / 2 - (len ? lift : 0);
-      return `M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;
+    const make = (name, attrs, parent) => {
+      const el = document.createElementNS(NS, name);
+      Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+      return parent.appendChild(el);
     };
-    const add = (d, cls) => {
-      const p = document.createElementNS(NS, "path");
-      p.setAttribute("d", d); p.setAttribute("class", cls); svg.appendChild(p); steps.push({ kind: "route", el: p, d });
+    const xy = ([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`;
+    // Routes are drawn as in the app's Recap map. Each takes the shorter way round the world and
+    // bows toward the nearer pole. Long routes that run side by side share one curvature, so the
+    // longer one flies higher and they nest instead of crossing.
+    const makeArc = (a, b) => {
+      let dx = b[0] - a[0];
+      dx -= Math.round(dx / W) * W;
+      const dy = b[1] - a[1], span = Math.abs(dx), midY = a[1] + dy / 2;
+      const pole = midY < EQUATOR ? -1 : 1, room = pole < 0 ? midY : HEIGHT - midY;
+      return {
+        a, dx, dy, span, pole, room, midX: a[0] + dx / 2,
+        bend: pole * Math.min(room, span * 0.36, W * 0.094),
+        westX: Math.min(a[0], a[0] + dx), eastX: Math.max(a[0], a[0] + dx),
+        westY: dx >= 0 ? a[1] : a[1] + dy, eastY: dx >= 0 ? a[1] + dy : a[1]
+      };
     };
-    journeys.forEach(trip => {
-      const pts = trip.map(([a, b]) => point(a, b));
-      add(arc(H, pts[0], true), "route home-route");
-      for (let k = 1; k < pts.length; k++) add(arc(pts[k - 1], pts[k], false), "route");
-      if (pts.length > 1) add(arc(pts[pts.length - 1], H, true), "route home-route back");
-      pts.forEach(([x, y]) => {
-        const c = document.createElementNS(NS, "circle");
-        c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 3.4); c.setAttribute("class", "city");
-        svg.appendChild(c); steps.push({ kind: "city", el: c });
+    const sameCorridor = (p, q) => {
+      if (p.pole !== q.pole) return false;
+      const shift = Math.round((p.midX - q.midX) / W) * W;
+      const overlap = Math.min(p.eastX, q.eastX + shift) - Math.max(p.westX, q.westX + shift);
+      const westGap = Math.abs(p.westX - q.westX - shift), eastGap = Math.abs(p.eastX - q.eastX - shift);
+      return overlap >= Math.min(p.span, q.span) * 0.68 && Math.min(westGap, eastGap) <= W * 0.055
+        && Math.max(westGap, eastGap) <= W * 0.15 && Math.abs(p.westY - q.westY) <= W * 0.10
+        && Math.abs(p.eastY - q.eastY) <= W * 0.13;
+    };
+    // blossom(arc, t, t) is the curve's point at t, and blossom(arc, s, e) the middle control
+    // point of its piece from s to e, so a piece is still the exact curve.
+    const blossom = (arc, s, e, shift = 0) => {
+      const w1 = (1 - s) * e + s * (1 - e), along = w1 / 2 + s * e;
+      return [arc.a[0] + along * arc.dx + shift, arc.a[1] + along * arc.dy + w1 * arc.bend];
+    };
+    // The pieces of a route, as [from, to, shift]: one that leaves an edge of the map comes back
+    // in at the other.
+    const pieces = arc => {
+      const end = arc.a[0] + arc.dx;
+      if (end >= 0 && end <= W) return [[0, 1, 0]];
+      const cut = ((end < 0 ? 0 : W) - arc.a[0]) / arc.dx;
+      return [[0, cut, 0], [cut, 1, end < 0 ? W : -W]];
+    };
+    // Each trip leaves home, takes its stops in turn and comes home again. A route and the same
+    // route back share one line.
+    const routes = new Map();
+    const trips = journeys.map(trip => {
+      const stops = trip.map(([lat, lon]) => point(lat, lon)), ends = [H, ...stops, H], legs = [];
+      for (let k = 1; k < ends.length; k++) {
+        const there = xy(ends[k - 1]) + ">" + xy(ends[k]), back = xy(ends[k]) + ">" + xy(ends[k - 1]);
+        if (routes.has(back)) legs.push({ arc: routes.get(back), reversed: true });
+        else {
+          if (!routes.has(there)) routes.set(there, makeArc(ends[k - 1], ends[k]));
+          legs.push({ arc: routes.get(there), reversed: false });
+        }
+      }
+      return { stops, legs };
+    });
+    // Long routes in the same corridor share one curvature.
+    const waiting = [...routes.values()].filter(arc => arc.span >= W * 0.12);
+    while (waiting.length) {
+      const corridor = [waiting.shift()];
+      for (let k = 0; k < corridor.length; k++) {
+        for (let j = 0; j < waiting.length;) {
+          if (sameCorridor(corridor[k], waiting[j])) corridor.push(...waiting.splice(j, 1)); else j++;
+        }
+      }
+      const longest = Math.max(...corridor.map(arc => arc.span));
+      const curvature = Math.min(1.65 / W, W * 0.15 / (longest * longest));
+      corridor.forEach(arc => { arc.bend = arc.pole * Math.min(arc.room, curvature * arc.span * arc.span); });
+    }
+    const lines = make("g", { class: "routes" }, svg), places = make("g", { class: "places" }, svg);
+    const drawn = new Set();
+    trips.forEach(trip => {
+      trip.legs.forEach(({ arc }) => {
+        if (drawn.has(arc)) return;
+        drawn.add(arc);
+        pieces(arc).forEach(([s, e, shift]) => {
+          const d = `M${xy(blossom(arc, s, s, shift))}Q${xy(blossom(arc, s, e, shift))} ${xy(blossom(arc, e, e, shift))}`;
+          steps.push({ kind: "route", el: make("path", { d, class: "route" }, lines), d });
+        });
       });
+      trip.stops.forEach(([x, y]) => steps.push({ kind: "city", el: make("circle", { cx: x, cy: y, r: 3.4, class: "city" }, places) }));
     });
-    // Home: a bright dot with a slow pulse.
-    const pulse = document.createElementNS(NS, "circle");
-    pulse.setAttribute("cx", H[0]); pulse.setAttribute("cy", H[1]); pulse.setAttribute("r", 6); pulse.setAttribute("class", "home-pulse");
-    const homeDot = document.createElementNS(NS, "circle");
-    homeDot.setAttribute("cx", H[0]); homeDot.setAttribute("cy", H[1]); homeDot.setAttribute("r", 5.2); homeDot.setAttribute("class", "home-dot");
-    svg.appendChild(pulse); svg.appendChild(homeDot);
-    // Small lights travelling along the routes from home, once the map has drawn.
-    svg.addComets = () => steps.filter(s => s.kind === "route" && s.el.classList.contains("home-route")).forEach((s, k) => {
-      if (k % 2) return;
-      const c = document.createElementNS(NS, "circle");
-      c.setAttribute("r", 2.2); c.setAttribute("class", "comet");
-      const m = document.createElementNS(NS, "animateMotion");
-      m.setAttribute("dur", `${3.5 + (k % 5) * 0.7}s`); m.setAttribute("repeatCount", "indefinite"); m.setAttribute("begin", `${(k % 7) * 0.45}s`);
-      m.setAttribute("path", s.d);
-      c.appendChild(m); svg.appendChild(c);
-    });
+    // Home is a place like the others, with a slow pulse round it.
+    const pulse = make("circle", { cx: H[0], cy: H[1], r: 4, class: "home-pulse" }, places);
+    make("circle", { cx: H[0], cy: H[1], r: 3.4, class: "city" }, places);
+    // On a narrow screen, lines, dots and lights are drawn a little heavier so they still read.
+    let weight = 1;
+    const fit = () => {
+      weight = Math.min(2, Math.max(1, Math.sqrt(980 / (svg.getBoundingClientRect().width || 980))));
+      lines.setAttribute("stroke-width", (1.15 * weight).toFixed(2));
+      places.setAttribute("stroke-width", (0.75 * weight).toFixed(2));
+      pulse.setAttribute("stroke-width", (1.2 * weight).toFixed(2));
+      places.querySelectorAll("circle").forEach(c => c.setAttribute("r", ((c === pulse ? 4 : 3.4) * weight).toFixed(2)));
+    };
+    fit();
+    addEventListener("resize", fit);
+    // Once the map has drawn, a soft amber light travels each trip, as in the app: out from home,
+    // round its stops and back. Every lap takes the same time, so a longer trip moves faster.
+    const glowFill = make("radialGradient", { id: "glowFill" }, make("defs", {}, svg));
+    [[0, 0.98], [0.36, 0.66], [0.67, 0.24], [1, 0]].forEach(([offset, alpha]) =>
+      make("stop", { offset, "stop-color": "#FFBF6E", "stop-opacity": alpha }, glowFill));
+    const track = legs => {
+      const runs = [];
+      legs.forEach(({ arc, reversed }) => {
+        const parts = pieces(arc).map(([s, e, shift]) => {
+          const n = Math.max(2, Math.ceil((e - s) * 64));
+          return Array.from({ length: n + 1 }, (_, i) => blossom(arc, s + (e - s) * i / n, s + (e - s) * i / n, shift));
+        });
+        if (reversed) parts.reverse().forEach(part => part.reverse());
+        runs.push(...parts);
+      });
+      const marks = [];
+      let length = 0;
+      runs.forEach(run => run.forEach((to, i) => {
+        if (!i) return;
+        const from = run[i - 1], step = Math.hypot(to[0] - from[0], to[1] - from[1]);
+        if (step > 0) { marks.push({ from, to, start: length, end: length + step }); length += step; }
+      }));
+      return {
+        length,
+        at: progress => {
+          const goal = length * progress;
+          let lo = 0, hi = marks.length - 1;
+          while (lo < hi) { const mid = (lo + hi) >> 1; if (marks[mid].end < goal) lo = mid + 1; else hi = mid; }
+          const { from, to, start, end } = marks[lo], f = (goal - start) / (end - start);
+          return [from[0] + (to[0] - from[0]) * f, from[1] + (to[1] - from[1]) * f];
+        }
+      };
+    };
+    svg.startGlows = () => {
+      const tracks = trips.map(trip => track(trip.legs)).sort((p, q) => p.length - q.length);
+      const count = tracks.length, layer = make("g", { class: "glows" }, svg);
+      const travel = 1.6 * Math.min(6.3, Math.max(3.5, tracks[count - 1].length / (W * 0.145)));
+      const cycle = travel + (count > 1 ? 0.25 : 0), shorter = Math.ceil(count / 2);
+      // Short and long trips take turns, so lights set out all through the lap.
+      const glows = tracks.map((path, rank) => {
+        const slot = rank < shorter ? 2 * rank : 2 * (count - 1 - rank) + 1;
+        const el = make("g", { opacity: 0 }, layer);
+        make("circle", { r: 7, fill: "url(#glowFill)" }, el);
+        make("circle", { r: 1.8, fill: "#FFF5DB", stroke: "#A8400F", "stroke-opacity": 0.82, "stroke-width": 0.5 }, el);
+        return { path, el, phase: count > 1 ? (slot + 0.25) * cycle / count : 0 };
+      });
+      let clock = 0, last = 0, ticking = 0, shown = true;
+      const wake = () => { if (!ticking && shown && !document.hidden) ticking = requestAnimationFrame(tick); };
+      const tick = now => {
+        ticking = 0;
+        clock += Math.min(0.1, Math.max(0, (now - last) / 1000));
+        last = now;
+        glows.forEach(({ path, el, phase }) => {
+          // Each light first sets out from home, so they leave one by one.
+          const t = clock + phase, lap = t % cycle;
+          if (t < cycle || lap >= travel) { el.setAttribute("opacity", 0); return; }
+          const [x, y] = path.at(lap / travel), fade = Math.min(1, lap / 0.18, (travel - lap) / 0.25);
+          el.setAttribute("transform", `translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${weight.toFixed(3)})`);
+          el.setAttribute("opacity", (fade * fade * (3 - 2 * fade)).toFixed(3));
+        });
+        wake();
+      };
+      // The lights rest while the map is off screen.
+      if ("IntersectionObserver" in window) new IntersectionObserver(entries => { shown = entries.some(e => e.isIntersecting); wake(); }).observe(svg);
+      document.addEventListener("visibilitychange", wake);
+      wake();
+    };
   }
   const counters = $$("[data-count]");
   let mapPlayed = false;
@@ -271,7 +401,7 @@
                      { duration: 560, delay, easing: "ease-out", fill: "both" });
       }
     });
-    setTimeout(() => svg.addComets && svg.addComets(), steps.length * 45 + 600);
+    setTimeout(() => svg.startGlows && svg.startGlows(), steps.length * 45 + 600);
   };
   // The numbers count up when the stats row itself comes into view.
   const statsRow = counters.length ? counters[0].closest(".stats") : null;

@@ -104,6 +104,12 @@ h1 .serif { font-size: 1.1em; letter-spacing: -0.02em; text-shadow: none; }
 .insta svg { width: 22px; height: 22px; }
 .hero-phone { position: relative; margin: 76px auto 0; width: min(330px, 74vw); z-index: 2; margin-bottom: -320px; }
 @media (max-width: 760px) { .hero-phone { margin-bottom: -220px; } }
+/* A laptop window can be short. There the space above the headline and the headline itself
+   shrink a little, so the badge and the follow link are on the first screen without scrolling. */
+@media (min-width: 761px) {
+  .hero { padding-top: clamp(100px, 15vh, 130px); }
+  .hero h1 { font-size: clamp(46px, min(9vw, 14.8vh), 122px); }
+}
 /* Phones: a calm first screen. The place as one quiet line, the headline, three lines of copy,
    one badge, and the app itself already in view. The photo sits further back so the words read. */
 @media (max-width: 760px) {
